@@ -1,6 +1,1 @@
-*.pyc
-.idea
 *.log
-*.pid
-run.sh
-aliyun-sms.sqlite
