@@ -44,7 +44,7 @@ func main() {
 	str = strconv.FormatBool(b2)
 	fmt.Printf("str type %T str=%q\n", str, str)
 
-	//strconv包中有一个函数Itoa
+	//strconv包中有一个函数Itoa,INT转string
 	var num5 int64 = 4567
 	str = strconv.Itoa(int(num5))
 	fmt.Printf("str type %T str=%q\n", str, str)
