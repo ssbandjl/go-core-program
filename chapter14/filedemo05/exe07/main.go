@@ -4,6 +4,9 @@ import (
 	"os"
 	"io"
 	"bufio" 
+	_"runtime" 
+	_"path" 
+    _"path/filepath"
 )
 
 //定义一个结构体，用于保存统计结果
@@ -19,7 +22,10 @@ func main() {
 	//思路: 打开一个文件, 创一个Reader
 	//每读取一行，就去统计该行有多少个 英文、数字、空格和其他字符
 	//然后将结果保存到一个结构体
-	fileName := "e:/abc.txt"
+	//_, filename, _, _ := runtime.Caller(1)
+	//fileName := path.Join(path.Dir(filename), "../../filedemo04/test.txt")
+	//fmt.Println(filepath.EvalSymlinks("../../filedemo04/test.txt"))
+	fileName := "../filedemo04/test.txt"
 	file, err := os.Open(fileName)
 	if err != nil {
 		fmt.Printf("open file err=%v\n", err)
@@ -37,12 +43,12 @@ func main() {
 		if err == io.EOF { //读到文件末尾就退出
 			break
 		}
-		//遍历 str ，进行统计
+		//遍历 str ，进行统计 中文支持 str=[]rune(str)
 		for _, v := range str {
 			
 			switch {
 				case v >= 'a' && v <= 'z':
-						fallthrough //穿透
+						fallthrough //穿透,执行下面的count.ChCount++
 				case v >= 'A' && v <= 'Z':
 						count.ChCount++
 				case v == ' ' || v == '\t':
