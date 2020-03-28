@@ -16,7 +16,7 @@ func main() {
 	//及时关闭file句柄
 	defer file.Close()
 	//准备写入5句 "hello, Gardon"
-	str := "hello,Gardon\r\n" // \r\n 表示换行
+	str := "hello,Gardon\r\n" // \r\n 表示换行,默认记事本认为\r是换行，其他编辑器可能认为\n才是换行
 	//写入时，使用带缓存的 *Writer
 	writer := bufio.NewWriter(file)
 	for i := 0; i < 5; i++ {
