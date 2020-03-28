@@ -1,10 +1,13 @@
+//https://segmentfault.com/a/1190000013685370 Golang “相对”路径问题
+//go run 是在临时文件夹下运行的
 package main
 
 import (
     "path/filepath"
     "os"
     "os/exec"
-    "string"
+    "strings"
+    "log"
 )
 
 func GetAppPath() string {
@@ -16,5 +19,6 @@ func GetAppPath() string {
 }
 
 func main(){
-	log.Println(GetAppPath())
+    log.Println(GetAppPath())
+    //2020/03/28 20:40:26 C:\Users\XB\AppData\Local\Temp\go-build777338702\command-line-arguments\_obj\exe
 }
