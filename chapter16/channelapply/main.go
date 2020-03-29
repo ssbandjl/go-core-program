@@ -35,7 +35,7 @@ func readData(intChan chan int, exitChan chan bool) {
 
 func main() {
 
-	//创建两个管道
+	//创建两个管道，这里的通道大小为10，但是我们定义的50个数据，编译器只要检测要通道有读取，就不会死锁，即使写得快读得慢；如果只有写，没有读，则通道会阻塞（死锁deadlock）
 	intChan := make(chan int, 10)
 	exitChan := make(chan bool, 1)
 	
@@ -46,6 +46,7 @@ func main() {
 	for {
 		_, ok := <-exitChan
 		if !ok {
+			fmt.Println("协程执行完毕，退出通道exitChan已关闭，主线程检测到协程退出标识也退出")
 			break
 		}
 	}
