@@ -22,7 +22,7 @@ func TestStore(t *testing.T) {
 
 func TestReStore(t *testing.T) {
 
-	//测试数据是很多，测试很多次，才确定函数，模块..
+	//实际使用中，测试数据是很多，测试很多次，才确定函数，模块..，会使用for循环，传入多条数据进行测试
 	
 	//先创建一个 Monster 实例 ， 不需要指定字段的值
 	var monster = &Monster{}

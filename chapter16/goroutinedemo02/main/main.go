@@ -33,7 +33,7 @@ func test(n int) {
 	//这里我们将 res 放入到myMap
 	//加锁
 	lock.Lock()
-	myMap[n] = res //concurrent map writes?
+	myMap[n] = res //concurrent map writes?互斥问题
 	//解锁
 	lock.Unlock()
 }
@@ -49,7 +49,7 @@ func main() {
 	//休眠10秒钟【第二个问题 】
 	//time.Sleep(time.Second * 5)
 
-	//这里我们输出结果,变量这个结果
+	//这里我们输出结果,变量这个结果，读的时候也要加锁，主线程不知道休眠多久，可能尝试探测时出现了资源竞争
 	lock.Lock()
 	for i, v := range myMap {
 		fmt.Printf("map[%d]=%d\n", i, v)
