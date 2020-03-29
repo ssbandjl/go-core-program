@@ -9,7 +9,7 @@ import (
 //向 intChan放入 1-8000个数
 func putNum(intChan chan int) {
 
-	for i := 1; i <= 80000; i++ {    
+	for i := 1; i <= 800; i++ {    
 		intChan<- i
 	}
 
@@ -89,12 +89,12 @@ func main() {
 
 	//遍历我们的 primeChan ,把结果取出
 	for {
-		_, ok := <-primeChan
+		res, ok := <-primeChan
 		if !ok{
 			break
 		}
 		//将结果输出
-		//fmt.Printf("素数=%d\n", res)
+		fmt.Printf("素数=%d\n", res)
 	}
 
 	fmt.Println("main线程退出")
