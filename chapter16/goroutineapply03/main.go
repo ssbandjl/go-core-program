@@ -9,7 +9,7 @@ import (
 //向 intChan放入 1-8000个数
 func putNum(intChan chan int) {
 
-	for i := 1; i <= 800; i++ {    
+	for i := 1; i <= 8000000; i++ {    
 		intChan<- i
 	}
 
