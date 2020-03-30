@@ -25,7 +25,7 @@ func main() {
 		if err != nil {
 			fmt.Println("readString err=", err)
 		}
-		//如果用户输入的是 exit就退出
+		//如果用户输入的是 exit就退出,去掉\r\n
 		line = strings.Trim(line, " \r\n")
 		if line == "exit" {
 			fmt.Println("客户端退出..")

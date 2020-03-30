@@ -1,8 +1,9 @@
 package main
+
 import (
 	"fmt"
+	_ "io"
 	"net" //做网络socket开发时,net包含有我们需要所有的方法和函数
-	_"io"
 )
 
 func process(conn net.Conn) {
@@ -17,14 +18,14 @@ func process(conn net.Conn) {
 		//1. 等待客户端通过conn发送信息
 		//2. 如果客户端没有wrtie[发送]，那么协程就阻塞在这里
 		//fmt.Printf("服务器在等待客户端%s 发送信息\n", conn.RemoteAddr().String())
-		n , err := conn.Read(buf) //从conn读取
+		n, err := conn.Read(buf) //从conn读取
 		if err != nil {
-			
+
 			fmt.Printf("客户端退出 err=%v", err)
 			return //!!!
 		}
-		//3. 显示客户端发送的内容到服务器的终端
-		fmt.Print(string(buf[:n])) 
+		//3. 显示客户端发送的内容到服务器的终端,这里的n很重要表示读取到的大小,截取buffer
+		fmt.Print(string(buf[:n]))
 	}
 
 }
@@ -38,7 +39,7 @@ func main() {
 	listen, err := net.Listen("tcp", "0.0.0.0:8888")
 	if err != nil {
 		fmt.Println("listen err=", err)
-		return 
+		return
 	}
 	defer listen.Close() //延时关闭listen
 
@@ -49,13 +50,13 @@ func main() {
 		conn, err := listen.Accept()
 		if err != nil {
 			fmt.Println("Accept() err=", err)
-			
+
 		} else {
 			fmt.Printf("Accept() suc con=%v 客户端ip=%v\n", conn, conn.RemoteAddr().String())
 		}
 		//这里准备其一个协程，为客户端服务
 		go process(conn)
 	}
-	
+
 	//fmt.Printf("listen suc=%v\n", listen)
 }
