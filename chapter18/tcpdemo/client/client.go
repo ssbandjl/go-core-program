@@ -1,18 +1,19 @@
 package main
+
 import (
+	"bufio"
 	"fmt"
 	"net"
-	"bufio"
 	"os"
 	"strings"
 )
 
 func main() {
 
-	conn, err := net.Dial("tcp", "192.168.20.253:8888")
+	conn, err := net.Dial("tcp", "127.0.0.1:8888")
 	if err != nil {
 		fmt.Println("client dial err=", err)
-		return 
+		return
 	}
 	//功能一：客户端可以发送单行数据，然后就退出
 	reader := bufio.NewReader(os.Stdin) //os.Stdin 代表标准输入[终端]
@@ -34,9 +35,8 @@ func main() {
 		//再将line 发送给 服务器
 		_, err = conn.Write([]byte(line + "\n"))
 		if err != nil {
-			fmt.Println("conn.Write err=", err)	
+			fmt.Println("conn.Write err=", err)
 		}
 	}
-	
 
 }
