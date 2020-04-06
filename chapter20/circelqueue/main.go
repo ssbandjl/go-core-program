@@ -20,7 +20,7 @@ func (this *CircleQueue) Push(val int)  (err error) {
 	if this.IsFull() {
 		return errors.New("queue full")
 	}
-	//分析出this.tail 在队列尾部，但是包含最后的元素
+	//分析出this.tail 在队列尾部，但是不包含最后的元素
 	this.array[this.tail] = val //把值给尾部
 	this.tail = (this.tail + 1) % this.maxSize
 	return 

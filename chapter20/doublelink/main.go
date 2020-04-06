@@ -85,7 +85,7 @@ func DelHerNode(head *HeroNode, id int) {
 	}
 	if flag {//找到, 删除
 		temp.next = temp.next.next //ok
-		if temp.next != nil {
+		if temp.next != nil {  //如果不是最后一个节点
 			temp.next.pre = temp 
 		}
 	} else {
