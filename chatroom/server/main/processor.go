@@ -5,7 +5,7 @@ import (
 	"net"
 	"go_code/chatroom/common/message"
 	"go_code/chatroom/server/utils"
-	"go_code/chatroom/server/process"
+	"go_code/chatroom/server/process"  //引入process包
 	"io"
 )
 

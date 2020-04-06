@@ -42,7 +42,7 @@ func (this *UserDao) getUserById(conn redis.Conn, id int) (user *User, err error
 		}
 		return 
 	}
-	user = &User{}
+	user = &User{}  //实例化一个用户结构体
 	//这里我们需要把res 反序列化成User实例
 	err = json.Unmarshal([]byte(res), user)
 	if err != nil {

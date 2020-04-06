@@ -9,9 +9,9 @@ var (
 	userMgr *UserMgr
 )
 type UserMgr struct {
-	onlineUsers map[int]*UserProcess
+	onlineUsers map[int]*UserProcess  //id:实例
 }
-//完成对userMgr初始化工作
+//完成对userMgr初始化工作，init什么时候调用
 func init() {
 	userMgr = &UserMgr{
 		onlineUsers : make(map[int]*UserProcess, 1024),

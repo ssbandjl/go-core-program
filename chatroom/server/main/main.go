@@ -156,17 +156,17 @@ func initUserDao() {
 
 func main() {
 	
-	//提示信息
-	fmt.Println("服务器[新的结构]在8889端口监听....")
+	//提示信息，这里可以提取配置
+	fmt.Println("服务器[新的连接]在8889端口监听....")
 	listen, err := net.Listen("tcp", "0.0.0.0:8889")
 	defer listen.Close()
 	if err != nil {
 		fmt.Println("net.Listen err=", err)
 		return 
 	}
-	//一旦监听成功，就等待客户端来链接服务器
+	//一旦监听成功，就等待客户端来连接服务器
 	for {
-		fmt.Println("等待客户端来链接服务器.....")
+		fmt.Println("等待客户端来连接服务器.....")
 		conn, err := listen.Accept()
 		if err != nil {
 			fmt.Println("listen.Accept err=" ,err)

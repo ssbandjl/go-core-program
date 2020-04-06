@@ -18,7 +18,7 @@ const (
 
 type Message struct {
 	Type string `json:"type"`  //消息类型
-	Data string `json:"data"` //消息的类型
+	Data string `json:"data"` //消息数据
 }
 
 

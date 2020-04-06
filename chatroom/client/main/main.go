@@ -5,7 +5,7 @@ import (
 	"go_code/chatroom/client/process"
 )
 
-//定义两个变量，一个表示用户id, 一个表示用户密码
+//定义三个变量，一个表示用户id, 一个表示用户密码,一个表示用户名
 var userId int
 var userPwd string
 var userName string
@@ -33,7 +33,7 @@ func main() {
 				fmt.Println("请输入用户的密码")
 				fmt.Scanf("%s\n", &userPwd)
 				// 完成登录
-				//1. 创建一个UserProcess的实例
+				//1. 创建一个UserProcess的实例,这里为何使用地址符&？应该是为了共享数据(结构体)，同一个实例，便于其他地方直接调用
 				up := &process.UserProcess{}
 				up.Login(userId, userPwd)
 			case 2 :

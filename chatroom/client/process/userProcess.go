@@ -94,7 +94,7 @@ func (this *UserProcess) Login(userId int, userPwd string) (err error) {
 
 	// return nil
 
-	//1. 链接到服务器
+	//1. 链接到服务器，此处可以将配置提取到配置文件
 	conn, err := net.Dial("tcp", "localhost:8889")
 	if err != nil {
 		fmt.Println("net.Dial err=", err)
@@ -103,7 +103,7 @@ func (this *UserProcess) Login(userId int, userPwd string) (err error) {
 	//延时关闭
 	defer conn.Close()
 
-	//2. 准备通过conn发送消息给服务
+	//2. 准备通过conn发送消息给服务器
 	var mes message.Message
 	mes.Type = message.LoginMesType
 	//3. 创建一个LoginMes 结构体
@@ -129,7 +129,7 @@ func (this *UserProcess) Login(userId int, userPwd string) (err error) {
 
 	// 7. 到这个时候 data就是我们要发送的消息
 	// 7.1 先把 data的长度发送给服务器
-	// 先获取到 data的长度->转成一个表示长度的byte切片
+	// 先获取到 data的长度->转成一个表示长度的byte切片，4个字节表示长度
 	var pkgLen uint32
 	pkgLen = uint32(len(data)) 
 	var buf [4]byte
