@@ -7,7 +7,7 @@ import (
 //使用数组来模拟一个栈的使用
 type Stack struct {
 	MaxTop int  // 表示我们栈最大可以存放数个数
-	Top int // 表示栈顶, 因为栈顶固定，因此我们直接使用Top
+	Top int // 表示栈顶, 因为栈底固定，因此我们直接使用Top
 	arr [5]int // 数组模拟栈
 }
 //入栈
