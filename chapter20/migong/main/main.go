@@ -59,7 +59,8 @@ func main() {
 		myMap[i][0] = 1
 		myMap[i][6] = 1
 	}
-
+	
+	//堵死了
 	myMap[3][1] = 1
 	myMap[3][2] = 1
 	myMap[1][2] = 1
