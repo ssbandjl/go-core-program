@@ -1,3 +1,4 @@
+//如何一次性声明多个变量
 package main
 import "fmt"
 
@@ -5,6 +6,7 @@ import "fmt"
 var n1 = 100
 var n2 = 200
 var name = "jack"
+
 //上面的声明方式，也可以改成一次性声明
 var (
 	n3 = 300

@@ -20,5 +20,6 @@ func main() {
 	//i := 99
 	//我们使用utils.go 的heroName 包名.标志符
 	fmt.Println(model.HeroName)
-
+	//i= 50
+	// 宋江
 }

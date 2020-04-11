@@ -7,7 +7,7 @@ import (
 func main() {
 	
 	var c1 byte = 'a' //97
-	var c2 byte = '0' //字符的0,48
+	var c2 byte = '0' //字符的0的ASCII码值48
 
 	//当我们直接输出byte值，就是输出了的对应的字符的码值
 	// 'a' ==> 

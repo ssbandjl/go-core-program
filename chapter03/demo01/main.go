@@ -1,3 +1,4 @@
+//变量的快速入门，内存示意图
 package main
 import "fmt"
 

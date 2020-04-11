@@ -1,6 +1,8 @@
 package main
 // import "fmt"
 // import "unsafe"
+
+//专业开发建议风格
 import (
 	"fmt"
 	"unsafe"
@@ -14,7 +16,7 @@ func main() {
 	var i int = 1
 	fmt.Println("i=", i)
 
-	//测试一下int8的范围 -128~127,
+	//测试一下int8的范围 -128~127, 第一位表示符号位-2的7次方~-2的7次方-1
 	//其它的 int16, int32, int64,类推。。。
 	var j int8 = 127
 	fmt.Println("j=", j)
