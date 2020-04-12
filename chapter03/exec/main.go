@@ -10,7 +10,7 @@ import (
 	// var n2 int64
 	// var n3 int8
 
-	// n2 = int64(n1) + 20  //int32 ---> int64 错误
+	// n2 = int64(n1) + 20  //int32 ---> int64 错误，类型转换后即可
 	// n3 = int8(n1) + 20  //int32 ---> int8 错误
 	// fmt.Println("n2=", n2, "n3=", n3)
 

@@ -16,18 +16,26 @@ func main() {
 
 	//使用第一种方式来转换 fmt.Sprintf方法
 
+	//这里用了值拷贝,先拷贝num1的值，通过Sprintf转成str类型在赋值给str
+	//int转string
 	str = fmt.Sprintf("%d", num1)
 	fmt.Printf("str type %T str=%q\n", str, str)
 
+	//float转string
 	str = fmt.Sprintf("%f", num2)
-	fmt.Printf("str type %T str=%q\n", str, str)
+	fmt.Printf("str type %T str=%q\n", str, str)   //%q会添加双引号""
 
+	//bool转string
 	str = fmt.Sprintf("%t", b)
 	fmt.Printf("str type %T str=%q\n", str, str)
 
+	//byte转string
 	str = fmt.Sprintf("%c", myChar)
 	fmt.Printf("str type %T str=%q\n", str, str)
 
+
+
+	
 	//第二种方式 strconv 函数 
 	var num3 int = 99
 	var num4 float64 = 23.456

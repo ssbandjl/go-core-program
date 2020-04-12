@@ -19,7 +19,7 @@ func main() {
 	var str2 string = "1234590"
 	var n1 int64
 	var n2 int
-	n1, _ = strconv.ParseInt(str2, 10, 64)
+	n1, _ = strconv.ParseInt(str2, 10, 64)   //10表示进制，64表示位数
 	n2 = int(n1)
 	fmt.Printf("n1 type %T  n1=%v\n", n1, n1)
 	fmt.Printf("n2 type %T n2=%v\n", n2, n2)
@@ -30,7 +30,7 @@ func main() {
 	fmt.Printf("f1 type %T f1=%v\n", f1, f1)
 
 
-	//注意：
+	//注意：如果不能转换，直接转换为其零值
 	var str4 string = "hello"
 	var n3 int64 = 11
 	n3, _ = strconv.ParseInt(str4, 10, 64)
