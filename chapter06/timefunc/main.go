@@ -8,7 +8,7 @@ func main() {
 	//看看日期和时间相关函数和方法使用
 	//1. 获取当前时间
 	now := time.Now()
-	fmt.Printf("now=%v now type=%T\n", now, now)
+	fmt.Printf("now=%v now type=%T\n", now, now) //2020-04-14 21:10:24.6497292 +0800 CST m=+0.010990701    type=time.Time
 
 	//2.通过now可以获取到年月日，时分秒
 	fmt.Printf("年=%v\n", now.Year())
@@ -21,7 +21,7 @@ func main() {
 
 	//格式化日期时间
 
-	fmt.Printf("当前年月日 %d-%d-%d %d:%d:%d \n", now.Year(), 
+	fmt.Printf("当前年月日 %d-%d-%d %d:%d:%d \n", now.Year(),  //当前年月日 2020-4-14 21:10:24
 	now.Month(), now.Day(), now.Hour(), now.Minute(), now.Second())
 
 	dateStr := fmt.Sprintf("当前年月日 %d-%d-%d %d:%d:%d \n", now.Year(), 
@@ -29,7 +29,7 @@ func main() {
 
 	fmt.Printf("dateStr=%v\n", dateStr)
 
-	//格式化日期时间的第二种方式
+	//格式化日期时间的第二种方式，固定写法，go语言的最初想法时间，这是定义好的参考时间
 	fmt.Printf(now.Format("2006-01-02 15:04:05"))
 	fmt.Println()
 	fmt.Printf(now.Format("2006-01-02"))
@@ -57,5 +57,6 @@ func main() {
 
 	//Unix和UnixNano的使用
 	fmt.Printf("unix时间戳=%v unixnano时间戳=%v\n", now.Unix(), now.UnixNano())
+	//unix时间戳=1586869824 unixnano时间戳=1586869824649729200
 
 }
