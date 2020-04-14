@@ -36,11 +36,12 @@ func main() {
 	var numArr02 = [3]int{5, 6, 7}
 	fmt.Println("numArr02=", numArr02)
 	//这里的 [...] 是规定的写法
-	var numArr03 = [...]int{8, 9, 10}
+	var numArr03 = [...]int{8, 9, 10, 11}
 	fmt.Println("numArr03=", numArr03)
 
-	var numArr04 = [...]int{1: 800, 0: 900, 2:999}
+	var numArr04 = [...]int{1: 800, 0: 900, 2:999, 3:333, 4:4444}
 	fmt.Println("numArr04=", numArr04)
+	//numArr04= [900 800 999 333 4444]
 
 	//类型推导
 	strArr05 := [...]string{1: "tom", 0: "jack", 2:"mary"}
