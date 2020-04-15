@@ -26,6 +26,6 @@ func run(num int, arr [6]int, leftIndex int, rightIndex int){
 
 func main(){
 	arr := [6]int{1,8, 10, 89, 1000, 1234}
-	run(1000, arr, 0, len(arr)-1)
+	run(1234, arr, 0, len(arr)-1)
 	run(10000, arr, 0, len(arr)-1)
 }
