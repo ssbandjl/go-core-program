@@ -38,4 +38,8 @@ func main() {
 	BubbleSort(&arr)
 
 	fmt.Println("main arr=", arr) //有序? 是有序的
+
+	var arr2 = [5]int{20, 11, -1, 44, 9}
+	Test(&arr2) //这里需要执行go build
+	fmt.Println("手写冒泡排序法排序后:\n", arr2)
 }
