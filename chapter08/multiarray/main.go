@@ -13,7 +13,7 @@ func main() {
 	*/
 
 	//定义/声明二维数组
-	var arr [4][6]int
+	var arr [4][6]int    //4行6列
 	//赋初值
 	arr[1][2] = 1
 	arr[2][1] = 2
