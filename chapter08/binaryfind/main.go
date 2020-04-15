@@ -21,7 +21,7 @@ if  leftIndex > rightIndex {
 */
 func BinaryFind(arr *[6]int, leftIndex int, rightIndex int, findVal int) {
 
-	//判断leftIndex 是否大于 rightIndex
+	//判断leftIndex 是否大于 rightIndex，相等的时候还可以判断一次
 	if leftIndex > rightIndex {
 		fmt.Println("找不到")
 		return
@@ -31,7 +31,7 @@ func BinaryFind(arr *[6]int, leftIndex int, rightIndex int, findVal int) {
 	middle := (leftIndex + rightIndex) / 2
 
 	if (*arr)[middle] > findVal {
-		//说明我们要查找的数，应该在  leftIndex --- middel-1
+		//说明我们要查找的数，应该在  leftIndex --- middel-1 //因为已经查找过一次了
 		BinaryFind(arr, leftIndex, middle - 1, findVal)
 	} else if (*arr)[middle] < findVal {
 		//说明我们要查找的数，应该在  middel+1 --- rightIndex
@@ -46,7 +46,7 @@ func main() {
 
 	arr := [6]int{1,8, 10, 89, 1000, 1234}
 
-	//测试一把
-	BinaryFind(&arr, 0, len(arr) - 1, -6)
+	//测试一把,用指针不用值拷贝，效率最高
+	BinaryFind(&arr, 0, len(arr) - 1, -6)  
 
 }
