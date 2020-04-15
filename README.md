@@ -9,7 +9,7 @@
   | chapter06 |函数/包/递归函数/init/匿名函数/闭包/defer/函数参数传递/作用域/金字塔/九九乘法表/字符串系统函数/内建函数/时间和日期相关函数/时间常量/错误处理/自定义错误     |
   | chapter07 |数组array和切片slice/切片扩容|
   | chapter08 |排序和查找/冒泡排序/二分查找/二维数组|
-  | chapter09 |map映射/        |
+  | chapter09 |map映射/map嵌套/增删改查/遍历(for-range)/map切片/map切片append动态增长/map排序        |
   | chapter10 |            |
   | chapter11 | interface  |
   | chapter12 |            |
