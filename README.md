@@ -11,7 +11,7 @@
   | chapter08 |排序和查找/冒泡排序/二分查找/二维数组|
   | chapter09 |map映射/map嵌套/增删改查/遍历(for-range)/map切片/map切片append动态增长/map排序        |
   | chapter10 |面向对象上/结构体/方法/方法VS函数/面向对象编程实例/结构体赋值/工厂模式         |
-  | chapter11 |抽象/银行账户/封装Set Get/继承/interface  |
+  | chapter11 |抽象/银行账户/封装Set Get/继承匿名结构体/interface  |
   | chapter12 |            |
   | chapter13 |            |
   | chapter14 | flag/args  |
