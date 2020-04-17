@@ -71,7 +71,7 @@ func main() {
 
 	//演示访问Goods的Name
 	fmt.Println(tv.Goods.Name)
-	fmt.Println(tv.Price) 
+	fmt.Println(tv.Price) //此处可以省略匿名结构体名 
 
 	tv2 := TV{ 
 		Goods{
