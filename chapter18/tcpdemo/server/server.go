@@ -18,7 +18,7 @@ func process(conn net.Conn) {
 		//1. 等待客户端通过conn发送信息
 		//2. 如果客户端没有wrtie[发送]，那么协程就阻塞在这里
 		//fmt.Printf("服务器在等待客户端%s 发送信息\n", conn.RemoteAddr().String())
-		n, err := conn.Read(buf) //从conn读取
+		n, err := conn.Read(buf) //从conn读取字节到buf切片中，表示字节数
 		if err != nil {
 
 			fmt.Printf("客户端退出 err=%v", err)

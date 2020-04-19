@@ -12,6 +12,7 @@ func main() {
 
 	//2. 看看intChan是什么
 	fmt.Printf("intChan 的值=%v intChan本身的地址=%p\n", intChan, &intChan)
+	//intChan 的值=0xc042066080 intChan本身的地址=0xc042004028
 
 
 	//3. 向管道写入数据

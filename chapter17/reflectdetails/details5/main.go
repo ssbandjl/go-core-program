@@ -14,8 +14,10 @@ func reflect01(b interface{}) {
 	rVal := reflect.ValueOf(b)
 	// 看看 rVal的Kind是 
 	fmt.Printf("rVal kind=%v\n", rVal.Kind())
+	//rVal kind=ptr
+
 	//3. rVal
-	//Elem返回v持有的接口保管的值的Value封装，或者v持有的指针指向的值的Value封装
+	//Elem返回v持有的接口保管的值的Value封装，或者v持有的指针指向的值的Value封装, 类似返回rVal指针对应的值*rVal
 	rVal.Elem().SetInt(20)
 }
 

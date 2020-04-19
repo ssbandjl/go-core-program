@@ -20,19 +20,19 @@ func main() {
 
 	for {
 
-		//从终端读取一行用户输入，并准备发送给服务器
-		line, err := reader.ReadString('\n')
+		//从终端读取一行用户输入，并准备发送给服务器，这里以\n作为结束符
+		line, err := reader.ReadString('\n') 
 		if err != nil {
 			fmt.Println("readString err=", err)
 		}
-		//如果用户输入的是 exit就退出,去掉\r\n
+		//如果用户输入的是 exit就退出, 先去掉空格\r\n
 		line = strings.Trim(line, " \r\n")
 		if line == "exit" {
 			fmt.Println("客户端退出..")
 			break
 		}
 
-		//再将line 发送给 服务器
+		//再将line 发送给 服务器，添加换行符
 		_, err = conn.Write([]byte(line + "\n"))
 		if err != nil {
 			fmt.Println("conn.Write err=", err)

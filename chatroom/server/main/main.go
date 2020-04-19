@@ -21,15 +21,15 @@ import (
 // 	//根据buf[:4] 转成一个 uint32类型
 // 	var pkgLen uint32
 // 	pkgLen = binary.BigEndian.Uint32(buf[0:4])
-// 	//根据 pkgLen 读取消息内容
+// 	//根据 pkgLen 读取消息内容，扔到buf里面去
 // 	n, err := conn.Read(buf[:pkgLen])
-// 	if n != int(pkgLen) || err != nil {
+// 	if n != int(pkgLen) || err != nil {    判断是否丢包
 // 		//err = errors.New("read pkg body error")
 // 		return 
 // 	}
 // 	//把pkgLen 反序列化成 -> message.Message
 // 	// 技术就是一层窗户纸 &mes！！
-// 	err = json.Unmarshal(buf[:pkgLen], &mes)
+// 	err = json.Unmarshal(buf[:pkgLen], &mes)   一定要传地址
 // 	if err != nil {
 // 		fmt.Println("json.Unmarsha err=", err)
 // 		return 
@@ -159,7 +159,7 @@ func main() {
 	//提示信息，这里可以提取配置
 	fmt.Println("服务器[新的连接]在8889端口监听....")
 	listen, err := net.Listen("tcp", "0.0.0.0:8889")
-	defer listen.Close()
+	defer listen.Close() //这里可有可无
 	if err != nil {
 		fmt.Println("net.Listen err=", err)
 		return 

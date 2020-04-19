@@ -48,13 +48,13 @@ func login(userId int, userPwd string) (err error) {
 		return 
 	}
 
-	// 7. 到这个时候 data就是我们要发送的消息
+	// 7. 到这个时候 data就是我们要发送的消息[]byte
 	// 7.1 先把 data的长度发送给服务器
 	// 先获取到 data的长度->转成一个表示长度的byte切片
-	var pkgLen uint32
+	var pkgLen uint32 //无符号32字节满足4GB数据
 	pkgLen = uint32(len(data)) 
 	var buf [4]byte
-	binary.BigEndian.PutUint32(buf[0:4], pkgLen)
+	binary.BigEndian.PutUint32(buf[0:4], pkgLen)   //长度转成字节切片
 	// 发送长度
 	n, err := conn.Write(buf[:4])
 	if n != 4 || err != nil {

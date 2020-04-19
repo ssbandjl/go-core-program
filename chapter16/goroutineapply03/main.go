@@ -66,14 +66,14 @@ func main() {
 	
 	//开启一个协程，向 intChan放入 1-8000个数
 	go putNum(intChan)
-	//开启4个协程，从 intChan取出数据，并判断是否为素数,如果是，就
+	//开启8个协程，从 intChan取出数据，并判断是否为素数,如果是，就
 	//放入到primeChan
 	for i := 0; i < 8; i++ {
 		go primeNum(intChan, primeChan, exitChan)
 	}
 
 	//这里我们主线程，进行处理
-	//直接
+	//匿名协程函数
 	go func(){
 		for i := 0; i < 8; i++ {
 			<-exitChan
@@ -82,7 +82,7 @@ func main() {
 		end := time.Now().Unix()
 		fmt.Println("使用协程耗时=", end - start)
 
-		//当我们从exitChan 取出了4个结果，就可以放心的关闭 prprimeChan
+		//当我们从exitChan 取出了8个结果，就可以放心的关闭 prprimeChan
 		close(primeChan)
 	}()
 

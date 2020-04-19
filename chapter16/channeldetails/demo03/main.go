@@ -22,7 +22,7 @@ func test() {
 	}()
 	//定义了一个map
 	var myMap map[int]string
-	myMap[0] = "golang" //error
+	myMap[0] = "golang" //error,这里没有make，故意触发错误
 }
 
 func main() {

@@ -16,12 +16,13 @@ func reflectTest01(b interface{}) {
 	//2. 获取到 reflect.Value
 	rVal := reflect.ValueOf(b)
 	
-	n2 := 2 + rVal.Int()
+	n2 := 2 + rVal.Int()  //reflect.Value提供的方法
 	//n3 := rVal.Float()
 	fmt.Println("n2=", n2)
 	//fmt.Println("n3=", n3)
 	
 	fmt.Printf("rVal=%v rVal type=%T\n", rVal, rVal)
+	//rVal=100 rVal type=reflect.Value
 
 	//下面我们将 rVal 转成 interface{}
 	iV := rVal.Interface()
@@ -38,7 +39,8 @@ func reflectTest02(b interface{}) {
 	//通过反射获取的传入的变量的 type , kind, 值
 	//1. 先获取到 reflect.Type
 	rTyp := reflect.TypeOf(b)
-	fmt.Println("rType=", rTyp)
+	fmt.Printf("\n\n############ 结构体 ############\n")
+	fmt.Println("rType=", rTyp) //rType= main.Student
 
 	//2. 获取到 reflect.Value
 	rVal := reflect.ValueOf(b)
@@ -49,12 +51,14 @@ func reflectTest02(b interface{}) {
 	//(2) rTyp.Kind() ==>
 	kind2 := rTyp.Kind()
 	fmt.Printf("kind =%v kind=%v\n", kind1, kind2)
+	//kind =struct kind=struct
 	
 
 
 	//下面我们将 rVal 转成 interface{}
 	iV := rVal.Interface()
 	fmt.Printf("iv=%v iv type=%T \n", iV, iV)
+	//iv={tom 20} iv type=main.Student
 	//将 interface{} 通过断言转成需要的类型
 	//这里，我们就简单使用了一带检测的类型断言.
 	//同学们可以使用 swtich 的断言形式来做的更加的灵活

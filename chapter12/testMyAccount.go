@@ -1,4 +1,7 @@
 package main
+
+//面向过程的编程
+
 import (
 	"fmt"
 )
