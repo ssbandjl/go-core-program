@@ -7,7 +7,7 @@ import (
 )
 
 //客户端要维护的map
-var onlineUsers map[int]*message.User = make(map[int]*message.User, 10)
+var onlineUsers map[int]*message.User = make(map[int]*message.User, 10)  //会自动增加
 var CurUser model.CurUser //我们在用户登录成功后，完成对CurUser初始化
 
 //在客户端显示当前在线的用户
@@ -15,7 +15,7 @@ func outputOnlineUser() {
 	//遍历一把 onlineUsers
 	fmt.Println("当前在线用户列表:")
 	for id, _ := range onlineUsers{
-		//如果不显示自己.
+		//已经过滤了自己
 		fmt.Println("用户id:\t", id)
 	}
 }
@@ -30,6 +30,8 @@ func updateUserStatus(notifyUserStatusMes *message.NotifyUserStatusMes) {
 			UserId : notifyUserStatusMes.UserId,
 		}
 	}
+
+	//如果用户已经存在，那就仅更新状态即可
 	user.UserStatus = notifyUserStatusMes.Status
 	onlineUsers[notifyUserStatusMes.UserId] = user
 

@@ -64,11 +64,15 @@ func serverProcessMes(conn net.Conn) {
 				//1. 取出.NotifyUserStatusMes
 				var notifyUserStatusMes message.NotifyUserStatusMes
 				json.Unmarshal([]byte(mes.Data), &notifyUserStatusMes)
-				//2. 把这个用户的信息，状态保存到客户map[int]User中
+				//2. 把这个用户的信息，状态保存到客户map[int]User中，本地管理的用户状态map
 				updateUserStatus(&notifyUserStatusMes)
 				//处理
+			
+			//群发消息
 			case message.SmsMesType : //有人群发消息
 				outputGroupMes(&mes)
+
+			//其他消息	
 			default :
 				fmt.Println("服务器端返回了未知的消息类型")
 		}

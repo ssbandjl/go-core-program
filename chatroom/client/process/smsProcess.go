@@ -39,7 +39,7 @@ func (this *SmsProcess) SendGroupMes(content string) (err error) {
 		return
 	}
 
-	//5. 将mes发送给服务器。。
+	//5. 将mes发送给服务器，这里用的是客户端保存的连接
 	tf := &utils.Transfer{
 		Conn : CurUser.Conn,
 	}
