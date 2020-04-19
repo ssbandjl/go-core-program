@@ -19,4 +19,4 @@
   | chapter16 | goroutine/channel/MPG模式/互斥锁sync.Mutex/Lock/Unlock/    |
   | chapter17 |反射reflect/TypeOf/ValueOf/常量/iota赋零值/修改值rVal.Elem().SetInt(20)/获取标签tagVal := typ.Field(i).Tag.Get("json")/bridge适配器|
   | chapter18 |TCP编程/Redis/init()初始化连接池      |
-  | chapter20 | 数据结构/栈       |
+  | chapter20 | 数据结构/栈/稀疏数组sparseArray/队列/数组实现非环形队列singleQueue/       |

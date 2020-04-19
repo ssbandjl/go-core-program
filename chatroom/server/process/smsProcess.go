@@ -32,6 +32,7 @@ func (this *SmsProcess) SendGroupMes(mes *message.Message) {
 
 	for id, up := range userMgr.onlineUsers {
 		//这里，还需要过滤到自己,即不要再发给自己
+		//这里可以扩展离线留言的功能，记录离线用户，检测到上线时发送离线消息
 		if id == smsMes.UserId {
 			continue
 		}
