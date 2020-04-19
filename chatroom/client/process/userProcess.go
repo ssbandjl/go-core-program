@@ -13,7 +13,7 @@ type UserProcess struct {
 	//暂时不需要字段..
 }
 
-
+//用户注册
 func (this *UserProcess) Register(userId int, 
 	userPwd string, userName string) (err error) {
 
@@ -75,8 +75,8 @@ func (this *UserProcess) Register(userId int,
 	var registerResMes message.RegisterResMes
 	err = json.Unmarshal([]byte(mes.Data), &registerResMes) 
 	if registerResMes.Code == 200 {
-		fmt.Println("注册成功, 你重新登录一把")
-		os.Exit(0)	
+		fmt.Println("注册成功, 请登录")
+		os.Exit(0)	//需要退出程序，因为外层是一个死循环
 	} else  {
 		fmt.Println(registerResMes.Error)
 		os.Exit(0)

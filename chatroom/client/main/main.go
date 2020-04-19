@@ -26,6 +26,7 @@ func main() {
 
 		fmt.Scanf("%d\n", &key)
 		switch key {
+			//用户登录
 			case 1 :
 				fmt.Println("登陆聊天室")
 				fmt.Println("请输入用户的id")
@@ -36,6 +37,8 @@ func main() {
 				//1. 创建一个UserProcess的实例,这里为何使用地址符&？应该是为了共享数据(结构体)，同一个实例，便于其他地方直接调用
 				up := &process.UserProcess{}
 				up.Login(userId, userPwd)
+
+			//用户注册	
 			case 2 :
 				fmt.Println("注册用户")
 				fmt.Println("请输入用户id:")
@@ -47,10 +50,14 @@ func main() {
 				//2. 调用UserProcess，完成注册的请求、
 				up := &process.UserProcess{}
 				up.Register(userId, userPwd, userName)
+
+			//退出系统	
 			case 3 :
 				fmt.Println("退出系统")
 				//loop = false
 				os.Exit(0)
+
+			//其他输入
 			default :
 				fmt.Println("你的输入有误，请重新输入")
 		}

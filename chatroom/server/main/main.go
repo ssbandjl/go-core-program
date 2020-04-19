@@ -133,22 +133,23 @@ func process(conn net.Conn) {
 	processor := &Processor{
 		Conn : conn,
 	}
-	err := processor.process2()
+	err := processor.process2()   //process2，这里调用二级处理器
 	if err != nil {
 		fmt.Println("客户端和服务器通讯协程错误=err", err)
 		return 
 	}
 }
 
+//init函数在main函数前执行
 func init() {
-	//当服务器启动时，我们就去初始化我们的redis的连接池
+	//当服务器启动时，我们就去初始化我们的redis的连接池, 这里一般是放置到配置文件中
 	initPool("localhost:6379", 16, 0, 300 * time.Second)
 	initUserDao()
 }
 
 //这里我们编写一个函数，完成对UserDao的初始化任务
 func initUserDao() {
-	//这里的pool 本身就是一个全局的变量
+	//这里的pool 本身就是一个全局的变量，redis.go中已经定义
 	//这里需要注意一个初始化顺序问题
 	//initPool, 在 initUserDao
 	model.MyUserDao = model.NewUserDao(pool)

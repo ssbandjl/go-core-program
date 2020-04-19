@@ -8,27 +8,39 @@ import (
 var (
 	userMgr *UserMgr
 )
+
+
 type UserMgr struct {
 	onlineUsers map[int]*UserProcess  //id:实例
 }
+
+
 //完成对userMgr初始化工作，init什么时候调用
 func init() {
 	userMgr = &UserMgr{
 		onlineUsers : make(map[int]*UserProcess, 1024),
 	}
 }
-//完成对onlineUsers添加
+
+
+//完成对onlineUsers添加/修改
 func (this *UserMgr) AddOnlineUser(up *UserProcess) {
 	this.onlineUsers[up.UserId] = up
 }
+
+
 //删除
 func (this *UserMgr) DelOnlineUser(userId int) {
-	delete(this.onlineUsers, userId)
+	delete(this.onlineUsers, userId) //map内置删除函数
 }
-//返回当前所有在线的用户
+
+
+//返回当前所有在线的用户，直接返回结构体UserProcess
 func (this *UserMgr) GetAllOnlineUser() map[int]*UserProcess {
 	return this.onlineUsers
 }
+
+
 //根据id返回对应的值
 func (this *UserMgr) GetOnlineUserById(userId int) (up *UserProcess, err error) {
 

@@ -7,6 +7,7 @@ import (
 //定义一个全局的pool
 var pool *redis.Pool
 
+//initPool("localhost:6379", 16, 0, 300 * time.Second)
 func initPool(address string, maxIdle, maxActive int, idleTimeout time.Duration) {
 
 	pool = &redis.Pool{

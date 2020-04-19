@@ -11,7 +11,7 @@ import (
 type Transfer struct {
 	//分析它应该有哪些字段
 	Conn net.Conn
-	Buf [8096]byte //这时传输时，使用缓冲
+	Buf [8096]byte //这时传输时，使用缓冲，写上值就是数组
 }
 
 

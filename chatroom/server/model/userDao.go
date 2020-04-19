@@ -20,7 +20,7 @@ type UserDao struct {
 	pool  *redis.Pool
 }
 
-//使用工厂模式，创建一个UserDao实例
+//使用工厂模式，创建一个UserDao实例，pool在服务器启动的时候就需要初始化连接池
 func NewUserDao(pool *redis.Pool) (userDao *UserDao) {
 
 	userDao = &UserDao{
@@ -43,7 +43,7 @@ func (this *UserDao) getUserById(conn redis.Conn, id int) (user *User, err error
 		return 
 	}
 	user = &User{}  //实例化一个用户结构体
-	//这里我们需要把res 反序列化成User实例
+	//这里我们需要把res 反序列化成User实例   "{\"userId\":100,\"userPwd\",\"userName\":xb\"}" -> User
 	err = json.Unmarshal([]byte(res), user)
 	if err != nil {
 		fmt.Println("json.Unmarshal err=", err)
@@ -65,7 +65,7 @@ func (this *UserDao) Login(userId int, userPwd string) (user *User, err error) {
 	if err != nil {
 		return 
 	}
-	//这时证明这个用户是获取到.
+	//这时证明这个用户是获取到,后面一个userPwd是传进来的密码
 	if user.UserPwd != userPwd {
 		err = ERROR_USER_PWD
 		return 
@@ -89,7 +89,7 @@ func (this *UserDao) Register(user *message.User) (err error) {
 	if err != nil {
 		return 
 	}
-	//入库
+	//入库，设置用户
 	_, err = conn.Do("HSet", "users", user.UserId, string(data))
 	if err != nil {
 		fmt.Println("保存注册用户错误 err=", err)

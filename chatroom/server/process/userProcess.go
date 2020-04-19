@@ -15,6 +15,7 @@ type UserProcess struct {
 	UserId int
 }
 
+//通知在线的用户，XXX上线了
 //这里我们编写通知所有在线的用户的方法
 //userId 要通知其它的在线用户，我上线
 func (this *UserProcess) NotifyOthersOnlineUser(userId int) {
@@ -30,6 +31,8 @@ func (this *UserProcess) NotifyOthersOnlineUser(userId int) {
 	}
 }
 
+
+//通知其他人我上线了
 func (this *UserProcess) NotifyMeOnline(userId int) {
 
 	//组装我们的NotifyUserStatusMes
@@ -68,6 +71,8 @@ func (this *UserProcess) NotifyMeOnline(userId int) {
 	}
 }
 
+
+//用户注册
 func (this *UserProcess) ServerProcessRegister(mes *message.Message) (err error) {
 
 
@@ -126,6 +131,8 @@ func (this *UserProcess) ServerProcessRegister(mes *message.Message) (err error)
 
 }
 
+
+//用户登录
 //编写一个函数serverProcessLogin函数， 专门处理登录请求
 func (this *UserProcess) ServerProcessLogin(mes *message.Message) (err error) {
 	//核心代码...
@@ -162,11 +169,12 @@ func (this *UserProcess) ServerProcessLogin(mes *message.Message) (err error) {
 	} else {
 		loginResMes.Code = 200
 		//这里，因为用户登录成功，我们就把该登录成功的用放入到userMgr中
-		//将登录成功的用户的userId 赋给 this
+		//将登录成功的用户的userId 赋给 this，这一步很重要
 		this.UserId = loginMes.UserId
 		userMgr.AddOnlineUser(this)
 		//通知其它的在线用户， 我上线了
 		this.NotifyOthersOnlineUser(loginMes.UserId)
+		
 		//将当前在线用户的id 放入到loginResMes.UsersId
 		//遍历 userMgr.onlineUsers
 		for id, _ := range userMgr.onlineUsers {

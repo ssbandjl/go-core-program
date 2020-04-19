@@ -11,7 +11,7 @@ const (
 
 //这里我们定义几个用户状态的常量
 const (
-	UserOnline = iota
+	UserOnline = iota  //自动增长
 	UserOffline 
 	UserBusyStatus 
 )
@@ -37,6 +37,7 @@ type LoginResMes struct {
 	Error string `json:"error"` // 返回错误信息
 }
 
+//用户注册
 type RegisterMes struct {
 	User User `json:"user"`//类型就是User结构体.
 }

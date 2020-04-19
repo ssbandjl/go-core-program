@@ -9,7 +9,7 @@ import (
 	"io"
 )
 
-//先创建一个Processor 的结构体体
+//先创建一个Processor 的结构体
 type Processor struct {
 	Conn net.Conn
 }
@@ -22,6 +22,7 @@ func (this *Processor) serverProcessMes(mes *message.Message) (err error) {
 	fmt.Println("mes=", mes)
 
 	switch mes.Type {
+		//用户登录
 		case message.LoginMesType :
 		   //处理登录登录
 		   //创建一个UserProcess实例
@@ -29,12 +30,16 @@ func (this *Processor) serverProcessMes(mes *message.Message) (err error) {
 				Conn : this.Conn,
 			}
 			err = up.ServerProcessLogin(mes)
+
+		//用户注册	
 		case message.RegisterMesType :
 		   //处理注册
 		   up := &process2.UserProcess{
 				Conn : this.Conn,
 			}
 			err = up.ServerProcessRegister(mes) // type : data
+
+		//群聊
 		case message.SmsMesType :
 			//创建一个SmsProcess实例完成转发群聊消息.
 			smsProcess := &process2.SmsProcess{}
@@ -45,6 +50,8 @@ func (this *Processor) serverProcessMes(mes *message.Message) (err error) {
 	return 
 }
 
+
+//process2第二层的处理
 func (this *Processor) process2() (err error) {
 
 	//循环的客户端发送的信息

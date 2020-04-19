@@ -9,7 +9,7 @@ import (
 	"net"
 )
 
-//显示登录成功后的界面..
+//显示登录成功后的界面，可以扩展功能，比如：查看留言、聊天记录等
 func ShowMenu() {
 	
 	fmt.Println("-------恭喜xxx登录成功---------")
@@ -36,7 +36,7 @@ func ShowMenu() {
 			fmt.Println("信息列表")
 		case 4:
 			fmt.Println("你选择退出了系统...")
-			os.Exit(0)
+			os.Exit(0)   //这里可以优雅的退出，先告诉服务器，让服务器先将缓存写入磁盘等
 		default :
 			fmt.Println("你输入的选项不正确..")
 	}
