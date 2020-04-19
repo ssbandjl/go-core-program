@@ -28,7 +28,7 @@ func (this *Queue) AddQueue(val int) (err error) {
 
 //从队列中取出数据
 func (this *Queue) GetQueue() (val int, err error) {
-	//先判断队列是否为空
+	//先判断队列是否为空,首指针追上尾指针
 	if this.rear == this.front { //队空
 		return -1, errors.New("queue empty")
 	}
@@ -41,7 +41,7 @@ func (this *Queue) GetQueue() (val int, err error) {
 //
 func (this *Queue) ShowQueue() {
 	fmt.Println("队列当前的情况是:")
-	//this.front 不包含队首的元素
+	//this.front 因为初始值是-1，所以不包含首指针的元素，需要+1
 	for i := this.front + 1; i <= this.rear; i++ {
 		fmt.Printf("array[%d]=%d\t", i, this.array[i])
 	}
@@ -71,6 +71,7 @@ func main() {
 
 		fmt.Scanln(&key)
 		switch key {
+
 			case "add":
 				fmt.Println("输入你要入队列数")
 				fmt.Scanln(&val)
@@ -81,6 +82,7 @@ func main() {
 
 					fmt.Println("加入队列ok")
 				}
+
 			case "get":
 				val, err := queue.GetQueue()
 				if err != nil {
@@ -88,8 +90,10 @@ func main() {
 				} else {
 					fmt.Println("从队列中取出了一个数=", val)
 				}
+
 			case "show":
 				queue.ShowQueue()
+
 			case "exit":
 				os.Exit(0)
 		}
