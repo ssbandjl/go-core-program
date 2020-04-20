@@ -22,7 +22,7 @@ func (this *CircleQueue) Push(val int)  (err error) {
 	}
 	//分析出this.tail 在队列尾部，但是不包含最后的元素
 	this.array[this.tail] = val //把值给尾部
-	this.tail = (this.tail + 1) % this.maxSize
+	this.tail = (this.tail + 1) % this.maxSize   //这里就可以走到前面去
 	return 
 }
 
@@ -52,22 +52,22 @@ func (this *CircleQueue) ListQueue() {
 	tempHead := this.head
 	for i := 0; i < size; i++ {
 		fmt.Printf("arr[%d]=%d\t", tempHead, this.array[tempHead])
-		tempHead = (tempHead + 1) % this.maxSize
+		tempHead = (tempHead + 1) % this.maxSize //往前移动一个元素
 	}
 	fmt.Println()
 }
 
-//判断环形队列为满
+//判断环形队列为满，预留一个位置作为探测，判断队列是否已满
 func (this *CircleQueue) IsFull() bool {
 	return (this.tail + 1) % this.maxSize == this.head 
 }
-//判断环形队列是空
+//判断环形队列是空，两者追上的时候为空
 func (this *CircleQueue) IsEmpty() bool {
 	return this.tail == this.head 
 }
 //取出环形队列有多少个元素
 func (this *CircleQueue) Size() int {
-	//这是一个关键的算法.
+	//这是一个关键的算法. (尾+长度-首)%长度=元素个数
 	return (this.tail + this.maxSize - this.head ) % this.maxSize
 }
 
