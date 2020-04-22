@@ -41,7 +41,7 @@ func InsertHeroNode2(head *HeroNode, newHeroNode *HeroNode) {
 	for {
 		if temp.next == nil {//说明到链表的最后
 			break
-		} else if temp.next.no >= newHeroNode.no {
+		} else if temp.next.no > newHeroNode.no {
 			//说明newHeroNode 就应该插入到temp后面
 			break 
 		} else if temp.next.no == newHeroNode.no {
@@ -56,7 +56,7 @@ func InsertHeroNode2(head *HeroNode, newHeroNode *HeroNode) {
 		fmt.Println("对不起，已经存在no=", newHeroNode.no)
 		return
 	} else {
-		newHeroNode.next = temp.next
+		newHeroNode.next = temp.next  //第一个元素或最后的元素会指空结构体(nil)
 		temp.next = newHeroNode
 	}
 
@@ -79,7 +79,7 @@ func DelHerNode(head *HeroNode, id int) {
 	}
 	if flag {//找到, 删除
 
-		temp.next = temp.next.next
+		temp.next = temp.next.next   //没有引用的值将被回收
 	} else {
 		fmt.Println("sorry, 要删除的id不存在")
 	}
@@ -113,7 +113,7 @@ func ListHeroNode(head *HeroNode) {
 
 func main() {
 
-	//1. 先创建一个头结点, 
+	//1. 先创建一个头结点, 在这里就是空结构体
 	head := &HeroNode{}
 
 	//2. 创建一个新的HeroNode
@@ -142,6 +142,7 @@ func main() {
 	// }
 
 	//3. 加入
+	InsertHeroNode2(head, hero3)
 	InsertHeroNode2(head, hero3)
 	InsertHeroNode2(head, hero1)
 	InsertHeroNode2(head, hero2)
