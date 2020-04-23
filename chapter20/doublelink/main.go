@@ -43,7 +43,7 @@ func InsertHeroNode2(head *HeroNode, newHeroNode *HeroNode) {
 	for {
 		if temp.next == nil {//说明到链表的最后
 			break
-		} else if temp.next.no >= newHeroNode.no {
+		} else if temp.next.no > newHeroNode.no {
 			//说明newHeroNode 就应该插入到temp后面
 			break 
 		} else if temp.next.no == newHeroNode.no {
@@ -83,7 +83,7 @@ func DelHerNode(head *HeroNode, id int) {
 		}
 		temp = temp.next
 	}
-	if flag {//找到, 删除
+	if flag {//找到, 删除，一个节点没有元素引用它，它就会被垃圾机制回收
 		temp.next = temp.next.next //ok
 		if temp.next != nil {  //如果不是最后一个节点
 			temp.next.pre = temp 

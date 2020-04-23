@@ -16,7 +16,7 @@ func InsertCatNode(head *CatNode, newCatNode *CatNode) {
 	if head.next == nil {
 		head.no = newCatNode.no
 		head.name = newCatNode.name
-		head.next = head //构成一个环形
+		head.next = head //构成一个环形，head也有自己的空间
 		fmt.Println(newCatNode, "加入到环形的链表")
 		return 
 	}
@@ -80,34 +80,36 @@ func DelCatNode(head *CatNode, id int) *CatNode {
 	}
 
 	//如果有两个包含两个以上结点
-	flag := true
+	flag := true //删除后置为false
 	for {
 		if temp.next == head { //如果到这来，说明我比较到最后一个【最后一个还没比较】
 			break 
 		} 
-		if temp.no ==id {
-			if temp == head { //说明删除的是头结点
+		if temp.no == id {
+			if temp == head { //说明删除的是头结点，初始情况就是temp := head
 				head = head.next
 			}
+
+			//不是头结点
 			//恭喜找到., 我们也可以在直接删除
 			helper.next = temp.next
-			fmt.Printf("猫猫=%d\n", id)
+			fmt.Printf("删除猫猫=%d\n", id)
 			flag = false
 			break
 		}
 		temp = temp.next //移动 【比较】
-		helper = helper.next //移动 【一旦找到要删除的结点 helper】
+		helper = helper.next //跟随移动 【一旦找到要删除的结点 利用helper删除节点】
 	}
 	//这里还有比较一次
 	if flag { //如果flag 为真，则我们上面没有删除
 		if temp.no == id {
 			helper.next = temp.next
-			fmt.Printf("猫猫=%d\n", id)
+			fmt.Printf("删除猫猫=%d\n", id)
 		}else {
 			fmt.Printf("对不起，没有no=%d\n", id)
 		}
 	} 
-	return head
+	return head   //返回新的头结点
 }
 
 func main() {
@@ -133,7 +135,7 @@ func main() {
 	InsertCatNode(head, cat3)
 	ListCircleLink(head)
 
-	head = DelCatNode(head, 30)
+	head = DelCatNode(head, 30)  //删除不存在的猫猫
 
 	fmt.Println()	
 	fmt.Println()	
