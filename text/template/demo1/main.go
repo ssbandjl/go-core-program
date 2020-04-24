@@ -13,11 +13,15 @@ type Inventory struct {
 }
 
 func main() {
-	var sweaters = Inventory{"wool", 17}
+
+	// 模板定义和解析模板
 	tmpl, err := template.New("test").Parse("{{.Count}} of {{.Material}}")
 	if err != nil {
 		panic(err)
 	}
+
+	// 数据驱动模板
+	var sweaters = Inventory{"wool", 17}
 	err = tmpl.Execute(os.Stdout, sweaters)
 	if err != nil {
 		panic(err)
