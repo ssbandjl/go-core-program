@@ -20,7 +20,7 @@ func SetWay(myMap *[8][7]int, i int, j int) bool {
 			//换一个策略 下右上左
 			myMap[i][j] = 2
 			if SetWay(myMap, i + 1, j) { //下
-				return true 
+				return true //这里返回True表示能走通
 			} else if SetWay(myMap, i , j + 1) { //右
 				return true
 			} else if SetWay(myMap, i - 1, j) { //上
