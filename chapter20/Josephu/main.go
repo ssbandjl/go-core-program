@@ -85,7 +85,7 @@ func PlayGame(first *Boy, startNo int, countNum int) {
 	//留一个，判断 startNO <= 小孩的总数
 	//2. 需要定义辅助指针，帮助我们删除小孩
 	tail := first 
-	//3. 让tail执行环形链表的最后一个小孩,这个非常的重要
+	//3. 让tail执行环形链表的最后一个小孩,这个非常的重要，表示跟随first
 	//因为tail 在删除小孩时需要使用到.
 	for {
 		if tail.Next == first { //说明tail到了最后的小孩
@@ -101,7 +101,7 @@ func PlayGame(first *Boy, startNo int, countNum int) {
 	fmt.Println()
 	//5. 开始数 countNum, 然后就删除first 指向的小孩
 	for {
-		//开始数countNum-1次
+		//开始数countNum-1次，自己数了一下，所以往前移动countNum-1次
 		for i := 1; i <= countNum -1; i++ {
 			first = first.Next
 			tail = tail.Next
@@ -115,7 +115,7 @@ func PlayGame(first *Boy, startNo int, countNum int) {
 			break
 		}
 	}
-	fmt.Printf("小孩小孩编号为%d 出圈 \n", first.No)
+	fmt.Printf("最后小孩编号为%d 出圈 \n", first.No)
 
 }
 

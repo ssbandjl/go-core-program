@@ -20,7 +20,7 @@ func InsertSort(arr *[80000]int) {
 			insertIndex-- 
 		}
 		//插入
-		if insertIndex + 1 != i {
+		if insertIndex + 1 != i { //如果第一次比较就确认位置，无须继续往前找位置
 			arr[insertIndex + 1] = insertVal
 		}
 		//fmt.Printf("第%d次插入后 %v\n",i, *arr)

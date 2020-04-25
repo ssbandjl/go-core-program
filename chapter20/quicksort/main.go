@@ -36,10 +36,13 @@ func QuickSort(left int, right int, array *[8000000]int) {
 		temp = array[l]
 		array[l] = array[r]
 		array[r] = temp
-		//优化
+		
+		//优化，如果左指针走到中间位置
 		if array[l]== pivot  {
 			r--
 		}
+
+		//如果右指针走到中间位置
 		if array[r]== pivot {
 			l++			
 		}

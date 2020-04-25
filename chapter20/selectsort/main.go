@@ -27,7 +27,7 @@ func SelectSort(arr *[80000]int) {
 				maxIndex = i
 			}
 		}
-		//交换，比较的效率高于交换，所以尽量减少交换次数
+		//如果maxIndex已经变化了, 交换，比较的效率高于交换，所以尽量减少交换次数
 		if maxIndex != j {
 			arr[j], arr[maxIndex] = arr[maxIndex], arr[j]
 		}
