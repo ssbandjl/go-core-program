@@ -10,13 +10,13 @@ func SetWay(myMap *[8][7]int, i int, j int) bool {
 
 	//分析出什么情况下，就找到出路 
 	//myMap[6][5] == 2
-	if myMap[6][5] == 2 {
+	if myMap[6][5] == 2 {  //右下角出口
 		return true
 	} else {
 		//说明要继续找
 		if myMap[i][j] == 0 { //如果这个点是可以探测
 
-			//假设这个点是可以通, 但是需要探测 上下左右
+			//假设这个点是可以通, 但是需要探测 上下左右，如果上下左右走不通，则走下面的else语句设置为3
 			//换一个策略 下右上左
 			myMap[i][j] = 2
 			if SetWay(myMap, i + 1, j) { //下
@@ -32,7 +32,7 @@ func SetWay(myMap *[8][7]int, i int, j int) bool {
 				return false
 			}
 
-		} else { // 说明这个点不能探测，为1，是强
+		} else { // 说明这个点不能探测，为1，是墙
 			return false
 		}
 
@@ -73,6 +73,19 @@ func main() {
 		}
 		fmt.Println()
 	}
+
+
+	/* 原始地图
+	1 1 1 1 1 1 1
+	1 0 1 0 0 0 1
+	1 0 1 0 0 0 1
+	1 1 1 0 0 0 1
+	1 0 0 0 0 0 1
+	1 0 0 0 0 0 1
+	1 0 0 0 0 0 1
+	1 1 1 1 1 1 1
+	*/
+
 
 	//使用测试
 	SetWay(&myMap, 1, 1)

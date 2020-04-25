@@ -120,7 +120,7 @@ func main() {
 		//处理多位数的问题
 		ch := exp[index:index+1] // 字符串.
 		//ch ==>"+" ===> 43
-		temp := int([]byte(ch)[0]) // 就是字符对应的ASCiI码
+		temp := int([]byte(ch)[0]) // 就是字符对应的ASCiI码，字符 -> 切片 -> Int
 		if operStack.IsOper(temp) { // 说明是符号
 
 			//如果operStack  是一个空栈， 直接入栈
@@ -138,7 +138,7 @@ func main() {
 						result = operStack.Cal(num1,num2, oper)
 						//将计算结果重新入数栈
 						numStack.Push(result)
-						//当前的符号压入符号栈
+						//当前的符号压入符号栈,优先级大的运算符已经运算过了，所以不会入栈
 						operStack.Push(temp)
 
 				}else {
@@ -156,7 +156,7 @@ func main() {
 			//2.每次要向index的后面字符测试一下，看看是不是运算符，然后处理
 			//如果已经到表达最后，直接将 keepNum
 			if index == len(exp) - 1 { 
-				val, _ := strconv.ParseInt(keepNum, 10, 64)
+				val, _ := strconv.ParseInt(keepNum, 10, 64)   //ASCII字符 -> int64  keepNum已经经过了拼接
 				numStack.Push(int(val))
 			} else {
 				//向index 后面测试看看是不是运算符 [index]
