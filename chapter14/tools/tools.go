@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"getserviceid"
 )
 
 func main() {
@@ -19,13 +20,6 @@ DevOps工具箱@2020
 
 Usage:  ./tools COMMAND [args...]
 
-Options:
-	--config string      Location of client config files (default "/home/icksys/.docker")
-	-D, --debug              Enable debug mode
-	-H, --host list          Daemon socket(s) to connect to
-	-l, --log-level string   Set the logging level ("debug"|"info"|"warn"|"error"|"fatal") (default "info")
-	-v, --version            Print version information and quit
-
 COMMAND:
 	getServiceId     从本地consul获取服务ID，可以用于注销服务
 	addService2Flume	添加服务日志收集
@@ -39,8 +33,10 @@ RUN:
 	getServiceIdCmd := flag.NewFlagSet("getServiceId", flag.ExitOnError)
 
 	//子命令选项
-	service := getServiceIdCmd.String("s", "", "service 服务名,默认为空")
-	api := getServiceIdCmd.String("a", "", "api地址，默认为空")
+	service := getServiceIdCmd.String("s", "", "service 默认服务名为空")
+	consulApiPrefix := getServiceIdCmd.String("a", "http://127.0.0.1:8500/", "默认API前缀")
+	
+
 
 	// 对于不同的子命令，我们可以定义不同的 flag
 	barCmd := flag.NewFlagSet("bar", flag.ExitOnError)
@@ -64,10 +60,11 @@ RUN:
 	// 每个子命令，都会解析自己的 flag 并允许它访问后续的参数。
 	case "getServiceId":
 		getServiceIdCmd.Parse(os.Args[2:])
-		fmt.Println("subcommand 'getServiceIdCmd'")
+		fmt.Println("子命令 'getServiceIdCmd'")
 		fmt.Println("  service:", *service)
-		fmt.Println("  api:", *api)
+		fmt.Println("  api:", *consulApiPrefix)
 		fmt.Println("  tail:", getServiceIdCmd.Args())
+		getserviceid.getserviceid(*service, *consulApiPrefix)
 	case "bar":
 		barCmd.Parse(os.Args[2:])
 		fmt.Println("subcommand 'bar'")
