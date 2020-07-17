@@ -1,5 +1,7 @@
 package main
 
+//Go 面向对象编程（译）https://juejin.im/post/5d065cad51882523be6a92f2
+
 import "fmt"
 
 type Animal struct {
@@ -7,6 +9,7 @@ type Animal struct {
 	mean bool
 }
 
+/*我们可以使用 Dog 引用直接调用结构体 Animal 的成员，而 Cat 必须通过成员 Basics 访问到 Animal 的成员*/
 type Cat struct {
 	Basics       Animal
 	MeowStrength int
@@ -44,6 +47,14 @@ func (cat *Cat) MakeNoise() {
 	}
 
 	fmt.Println("")
+}
+
+type AnimalSounder interface {
+	MakeNoise()
+}
+
+func MakeSomeNoise(animalSounder AnimalSounder) {
+	animalSounder.MakeNoise()
 }
 
 func main() {
