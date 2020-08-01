@@ -1,10 +1,11 @@
 package main
+
 import (
-	"fmt"
-	"net"
-	"go_code/chatroom/common/message"
 	"encoding/binary"
 	"encoding/json"
+	"fmt"
+	"go_code/chatroom/common/message"
+	"net"
 )
 
 func readPkg(conn net.Conn) (mes message.Message, err error) {
@@ -25,37 +26,37 @@ func readPkg(conn net.Conn) (mes message.Message, err error) {
 	n, err := conn.Read(buf[:pkgLen])
 	if n != int(pkgLen) || err != nil {
 		//err = errors.New("read pkg body error")
-		return 
+		return
 	}
 	//把pkgLen 反序列化成 -> message.Message
 	// 技术就是一层窗户纸 &mes！！
 	err = json.Unmarshal(buf[:pkgLen], &mes)
 	if err != nil {
 		fmt.Println("json.Unmarsha err=", err)
-		return 
+		return
 	}
-	return 
+	return
 }
 
 func writePkg(conn net.Conn, data []byte) (err error) {
 
 	//先发送一个长度给对方
 	var pkgLen uint32
-	pkgLen = uint32(len(data)) 
+	pkgLen = uint32(len(data))
 	var buf [4]byte
 	binary.BigEndian.PutUint32(buf[0:4], pkgLen)
 	// 发送长度
 	n, err := conn.Write(buf[:4])
 	if n != 4 || err != nil {
 		fmt.Println("conn.Write(bytes) fail", err)
-		return 
+		return
 	}
 
 	//发送data本身
 	n, err = conn.Write(data)
 	if n != int(pkgLen) || err != nil {
 		fmt.Println("conn.Write(bytes) fail", err)
-		return 
+		return
 	}
-	return 
+	return
 }
