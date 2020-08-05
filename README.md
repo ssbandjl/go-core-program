@@ -16,7 +16,7 @@
   | chapter13 | 客户信息关系系统customerManage/删除切片对应的index的元素append(this.customers[:index], this.customers[index+1:]...) |
   | chapter14 | 文件操作/os.File结构体/ioutil.ReadFile/ioutil.WriteFile/读文件/带缓冲写文件/命令行参数/os.Args/flag/序列化为json/json.Marshal/tag标签/json反序列化为其他KV类型/json.Unmarshal([]byte(str),&xxx) |
   | chapter15 | 单元测试/t.Fatalf/t.Logf |
-  | chapter16 | goroutine/判断大数是否是素数/进程和线程(相比协程还是偏重)/并发(多线程单核,微观是时间分片,与Web并发概念有区别)和并行(多线程多核)/协程(轻量级线程,独立栈,共享堆,用户调度,轻松开启上万个协程)和主线程(重量级物理线程，直接作用在CPU,其他语言并发是基于线程的，线程过多耗费资源)/channel/MPG模式(M:主线程,P:协程上下文,G:协程)/互斥锁sync.Mutex/Lock/Unlock/ |
+  | chapter16 | goroutine/判断大数是否是素数/进程和线程(相比协程还是偏重)/并发(多线程单核,微观是时间分片,与Web并发概念有区别)和并行(多线程多核)/协程(轻量级线程,独立栈,共享堆,用户调度,轻松开启上万个协程)和主线程(重量级物理线程，直接作用在CPU,其他语言并发是基于线程的，线程过多(几千个)耗费资源)/channel/MPG模式(M:主线程,P:协程上下文,G:协程,协程可形成队列)/MPG运行状态/互斥锁sync.Mutex/Lock/Unlock/ |
   | chapter17 |反射reflect/TypeOf/ValueOf/常量/iota赋零值/修改值rVal.Elem().SetInt(20)/获取标签tagVal := typ.Field(i).Tag.Get("json")/bridge适配器|
   | chapter18 |TCP编程/Redis/init()初始化连接池      |
   | chapter20 | 数据结构/栈/稀疏数组sparseArray/队列/数组实现非环形队列singleQueue/       |
