@@ -1,10 +1,11 @@
 package model
 
 import (
-	"fmt"
-	"github.com/garyburd/redigo/redis"
-	"go_code/chatroom/common/message"
 	"encoding/json"
+	"fmt"
+	"go_code/chatroom/common/message"
+
+	"github.com/garyburd/redigo/redis"
 )
 
 //我们在服务器启动后，就初始化一个userDao实例，
@@ -17,7 +18,7 @@ var (
 //完成对User 结构体的各种操作.
 
 type UserDao struct {
-	pool  *redis.Pool
+	pool *redis.Pool
 }
 
 //使用工厂模式，创建一个UserDao实例，pool在服务器启动的时候就需要初始化连接池
@@ -26,30 +27,32 @@ func NewUserDao(pool *redis.Pool) (userDao *UserDao) {
 	userDao = &UserDao{
 		pool: pool,
 	}
-	return 
+	return
 }
 
 //思考一下在UserDao 应该提供哪些方法给我们
-//1. 根据用户id 返回 一个User实例+err 
+//1. 根据用户id 返回 一个User实例+err
 func (this *UserDao) getUserById(conn redis.Conn, id int) (user *User, err error) {
 
 	//通过给定id 去 redis查询这个用户
 	res, err := redis.String(conn.Do("HGet", "users", id))
+	fmt.Println("redis查询结果:res=", res)
+
 	if err != nil {
 		//错误!
 		if err == redis.ErrNil { //表示在 users 哈希中，没有找到对应id
 			err = ERROR_USER_NOTEXISTS
 		}
-		return 
+		return
 	}
-	user = &User{}  //实例化一个用户结构体
+	user = &User{} //实例化一个用户结构体
 	//这里我们需要把res 反序列化成User实例   "{\"userId\":100,\"userPwd\",\"userName\":xb\"}" -> User
 	err = json.Unmarshal([]byte(res), user)
 	if err != nil {
 		fmt.Println("json.Unmarshal err=", err)
-		return 
+		return
 	}
-	return 
+	return
 }
 
 //完成登录的校验 Login
@@ -59,41 +62,40 @@ func (this *UserDao) getUserById(conn redis.Conn, id int) (user *User, err error
 func (this *UserDao) Login(userId int, userPwd string) (user *User, err error) {
 
 	//先从UserDao 的连接池中取出一根连接
-	conn := this.pool.Get() 
+	conn := this.pool.Get()
 	defer conn.Close()
 	user, err = this.getUserById(conn, userId)
 	if err != nil {
-		return 
+		return
 	}
 	//这时证明这个用户是获取到,后面一个userPwd是传进来的密码
 	if user.UserPwd != userPwd {
 		err = ERROR_USER_PWD
-		return 
+		return
 	}
-	return 
+	return
 }
-
 
 func (this *UserDao) Register(user *message.User) (err error) {
 
 	//先从UserDao 的连接池中取出一根连接
-	conn := this.pool.Get() 
+	conn := this.pool.Get()
 	defer conn.Close()
 	_, err = this.getUserById(conn, user.UserId)
 	if err == nil {
 		err = ERROR_USER_EXISTS
-		return 
+		return
 	}
 	//这时，说明id在redis还没有，则可以完成注册
 	data, err := json.Marshal(user) //序列化
 	if err != nil {
-		return 
+		return
 	}
 	//入库，设置用户
 	_, err = conn.Do("HSet", "users", user.UserId, string(data))
 	if err != nil {
 		fmt.Println("保存注册用户错误 err=", err)
-		return 
+		return
 	}
-	return 
+	return
 }

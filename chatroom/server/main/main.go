@@ -1,11 +1,11 @@
 package main
+
 import (
 	"fmt"
+	"go_code/chatroom/server/model"
 	"net"
 	"time"
-	"go_code/chatroom/server/model"
 )
-
 
 // func readPkg(conn net.Conn) (mes message.Message, err error) {
 
@@ -25,39 +25,39 @@ import (
 // 	n, err := conn.Read(buf[:pkgLen])
 // 	if n != int(pkgLen) || err != nil {    判断是否丢包
 // 		//err = errors.New("read pkg body error")
-// 		return 
+// 		return
 // 	}
 // 	//把pkgLen 反序列化成 -> message.Message
 // 	// 技术就是一层窗户纸 &mes！！
 // 	err = json.Unmarshal(buf[:pkgLen], &mes)   一定要传地址
 // 	if err != nil {
 // 		fmt.Println("json.Unmarsha err=", err)
-// 		return 
+// 		return
 // 	}
-// 	return 
+// 	return
 // }
 
 // func writePkg(conn net.Conn, data []byte) (err error) {
 
 // 	//先发送一个长度给对方
 // 	var pkgLen uint32
-// 	pkgLen = uint32(len(data)) 
+// 	pkgLen = uint32(len(data))
 // 	var buf [4]byte
 // 	binary.BigEndian.PutUint32(buf[0:4], pkgLen)
 // 	// 发送长度
 // 	n, err := conn.Write(buf[:4])
 // 	if n != 4 || err != nil {
 // 		fmt.Println("conn.Write(bytes) fail", err)
-// 		return 
+// 		return
 // 	}
 
 // 	//发送data本身
 // 	n, err = conn.Write(data)
 // 	if n != int(pkgLen) || err != nil {
 // 		fmt.Println("conn.Write(bytes) fail", err)
-// 		return 
+// 		return
 // 	}
-// 	return 
+// 	return
 // }
 
 // //编写一个函数serverProcessLogin函数， 专门处理登录请求
@@ -65,10 +65,10 @@ import (
 // 	//核心代码...
 // 	//1. 先从mes 中取出 mes.Data ，并直接反序列化成LoginMes
 // 	var loginMes message.LoginMes
-// 	err = json.Unmarshal([]byte(mes.Data), &loginMes) 
+// 	err = json.Unmarshal([]byte(mes.Data), &loginMes)
 // 	if err != nil {
 // 		fmt.Println("json.Unmarshal fail err=", err)
-// 		return 
+// 		return
 // 	}
 // 	//1先声明一个 resMes
 // 	var resMes message.Message
@@ -76,11 +76,11 @@ import (
 // 	//2在声明一个 LoginResMes，并完成赋值
 // 	var loginResMes message.LoginResMes
 // 	//如果用户id= 100， 密码=123456, 认为合法，否则不合法
-	
+
 // 	if loginMes.UserId == 100 && loginMes.UserPwd == "123456" {
 // 		//合法
 // 		loginResMes.Code = 200
-		
+
 // 	} else {
 // 		//不合法
 // 		loginResMes.Code = 500 // 500 状态码，表示该用户不存在
@@ -91,7 +91,7 @@ import (
 // 	data, err := json.Marshal(loginResMes)
 // 	if err != nil {
 // 		fmt.Println("json.Marshal fail", err)
-// 		return 
+// 		return
 // 	}
 
 // 	//4. 将data 赋值给 resMes
@@ -101,11 +101,11 @@ import (
 // 	data, err = json.Marshal(resMes)
 // 	if err != nil {
 // 		fmt.Println("json.Marshal fail", err)
-// 		return 
+// 		return
 // 	}
 // 	//6. 发送data, 我们将其封装到writePkg函数
 // 	err = writePkg(conn, data)
-// 	return 
+// 	return
 // }
 
 // //编写一个ServerProcessMes 函数
@@ -121,29 +121,30 @@ import (
 // 		 default :
 // 			fmt.Println("消息类型不存在，无法处理...")
 // 	 }
-// 	 return 
+// 	 return
 // }
 
 //处理和客户端的通讯
 func process(conn net.Conn) {
 	//这里需要延时关闭conn
 	defer conn.Close()
-	
-	//这里调用总控, 创建一个
+
+	//这里调用总控, 创建一个，将链接conn赋值给Conn字段
 	processor := &Processor{
-		Conn : conn,
+		Conn: conn,
 	}
-	err := processor.process2()   //process2，这里调用二级处理器
+	err := processor.process2() //process2，这里调用二级处理器
 	if err != nil {
 		fmt.Println("客户端和服务器通讯协程错误=err", err)
-		return 
+		return
 	}
 }
 
 //init函数在main函数前执行
 func init() {
 	//当服务器启动时，我们就去初始化我们的redis的连接池, 这里一般是放置到配置文件中
-	initPool("localhost:6379", 16, 0, 300 * time.Second)
+	//func initPool(address string, maxIdle, maxActive int, idleTimeout time.Duration)
+	initPool("localhost:6379", 16, 0, 300*time.Second)
 	initUserDao()
 }
 
@@ -156,21 +157,21 @@ func initUserDao() {
 }
 
 func main() {
-	
+
 	//提示信息，这里可以提取配置
 	fmt.Println("服务器[新的连接]在8889端口监听....")
 	listen, err := net.Listen("tcp", "0.0.0.0:8889")
 	defer listen.Close() //这里可有可无
 	if err != nil {
 		fmt.Println("net.Listen err=", err)
-		return 
+		return
 	}
 	//一旦监听成功，就等待客户端来连接服务器
 	for {
 		fmt.Println("等待客户端来连接服务器.....")
 		conn, err := listen.Accept()
 		if err != nil {
-			fmt.Println("listen.Accept err=" ,err)
+			fmt.Println("listen.Accept err=", err)
 		}
 
 		//一旦链接成功，则启动一个协程和客户端保持通讯。。
