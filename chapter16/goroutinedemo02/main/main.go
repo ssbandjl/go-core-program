@@ -1,12 +1,13 @@
 package main
+
 import (
 	"fmt"
-	_ "time"
 	"sync"
+	_ "time"
 )
 
 // 需求：现在要计算 1-200 的各个数的阶乘，并且把各个数的阶乘放入到map中。
-// 最后显示出来。要求使用goroutine完成 
+// 最后显示出来。要求使用goroutine完成
 
 // 思路
 // 1. 编写一个函数，来计算各个数的阶乘，并放入到 map中.
@@ -14,9 +15,9 @@ import (
 // 3. map 应该做出一个全局的.
 
 var (
-	myMap = make(map[int]int, 10)  
+	myMap = make(map[int]int, 10)
 	//声明一个全局的互斥锁
-	//lock 是一个全局的互斥锁， 
+	//lock 是一个全局的互斥锁，
 	//sync 是包: synchornized 同步
 	//Mutex : 是互斥
 	lock sync.Mutex
@@ -24,10 +25,10 @@ var (
 
 // test 函数就是计算 n!, 让将这个结果放入到 myMap
 func test(n int) {
-	
+
 	res := 1
 	for i := 1; i <= n; i++ {
-		res *= i
+		res *= i //n!=n*(n-1)*(n-2)...*1=1*2*3...*n
 	}
 
 	//这里我们将 res 放入到myMap
@@ -44,7 +45,6 @@ func main() {
 	for i := 1; i <= 20; i++ {
 		go test(i)
 	}
-
 
 	//休眠10秒钟【第二个问题 】
 	//time.Sleep(time.Second * 5)
