@@ -1,16 +1,15 @@
 package main
+
 import (
 	"fmt"
 	"time"
 )
 
-
-
 //向 intChan放入 1-8000个数
 func putNum(intChan chan int) {
 
-	for i := 1; i <= 8000000; i++ {    
-		intChan<- i
+	for i := 1; i <= 8000000; i++ {
+		intChan <- i
 	}
 
 	//关闭intChan
@@ -23,18 +22,18 @@ func primeNum(intChan chan int, primeChan chan int, exitChan chan bool) {
 
 	//使用for 循环
 	// var num int
-	var flag bool // 
+	var flag bool //
 	for {
 		//time.Sleep(time.Millisecond * 10)
 		num, ok := <-intChan //intChan 取不到..
-		
-		if !ok { 
+
+		if !ok {
 			break
 		}
 		flag = true //假设是素数
 		//判断num是不是素数
 		for i := 2; i < num; i++ {
-			if num % i == 0 {//说明该num不是素数
+			if num%i == 0 { //说明该num不是素数
 				flag = false
 				break
 			}
@@ -42,28 +41,26 @@ func primeNum(intChan chan int, primeChan chan int, exitChan chan bool) {
 
 		if flag {
 			//将这个数就放入到primeChan
-			primeChan<- num
+			primeChan <- num
 		}
 	}
 
 	fmt.Println("有一个primeNum 协程因为取不到数据，退出")
 	//这里我们还不能关闭 primeChan
-	//向 exitChan 写入true
-	exitChan<- true	
+	//循环结束后，向 exitChan 写入true，一共会写8个bool数据
+	exitChan <- true
 
 }
 
 func main() {
 
-	intChan := make(chan int , 1000)
-	primeChan := make(chan int, 20000)//放入结果
+	intChan := make(chan int, 1000)
+	primeChan := make(chan int, 20000) //放入结果
 	//标识退出的管道
 	exitChan := make(chan bool, 8) // 4个
 
-
-
 	start := time.Now().Unix()
-	
+
 	//开启一个协程，向 intChan放入 1-8000个数
 	go putNum(intChan)
 	//开启8个协程，从 intChan取出数据，并判断是否为素数,如果是，就
@@ -73,24 +70,23 @@ func main() {
 	}
 
 	//这里我们主线程，进行处理
-	//匿名协程函数
-	go func(){
+	//匿名协程函数，阻塞，直到读取出8个数据为止
+	go func() {
 		for i := 0; i < 8; i++ {
 			<-exitChan
 		}
 
 		end := time.Now().Unix()
-		fmt.Println("使用协程耗时=", end - start)
+		fmt.Println("使用协程耗时=", end-start)
 
 		//当我们从exitChan 取出了8个结果，就可以放心的关闭 prprimeChan
 		close(primeChan)
 	}()
 
-
 	//遍历我们的 primeChan ,把结果取出
 	for {
 		res, ok := <-primeChan
-		if !ok{
+		if !ok {
 			break
 		}
 		//将结果输出
@@ -99,6 +95,4 @@ func main() {
 
 	fmt.Println("main线程退出")
 
-
-	
 }
