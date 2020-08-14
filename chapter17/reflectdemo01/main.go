@@ -1,9 +1,9 @@
 package main
-import (
-	"reflect"
-	"fmt"
-)
 
+import (
+	"fmt"
+	"reflect"
+)
 
 //专门演示反射
 func reflectTest01(b interface{}) {
@@ -15,12 +15,12 @@ func reflectTest01(b interface{}) {
 
 	//2. 获取到 reflect.Value
 	rVal := reflect.ValueOf(b)
-	
-	n2 := 2 + rVal.Int()  //reflect.Value提供的方法
+
+	n2 := 2 + rVal.Int() //reflect.Value提供的方法
 	//n3 := rVal.Float()
 	fmt.Println("n2=", n2)
 	//fmt.Println("n3=", n3)
-	
+
 	fmt.Printf("rVal=%v rVal type=%T\n", rVal, rVal)
 	//rVal=100 rVal type=reflect.Value
 
@@ -29,7 +29,6 @@ func reflectTest01(b interface{}) {
 	//将 interface{} 通过断言转成需要的类型
 	num2 := iV.(int)
 	fmt.Println("num2=", num2)
-
 
 }
 
@@ -44,22 +43,22 @@ func reflectTest02(b interface{}) {
 
 	//2. 获取到 reflect.Value
 	rVal := reflect.ValueOf(b)
+	fmt.Printf("reflect.Value rVal=%v\n", rVal)
 
 	//3. 获取 变量对应的Kind
-	//(1) rVal.Kind() ==> 
+	//(1) rVal.Kind() ==>
 	kind1 := rVal.Kind()
 	//(2) rTyp.Kind() ==>
 	kind2 := rTyp.Kind()
-	fmt.Printf("kind =%v kind=%v\n", kind1, kind2)
+	fmt.Printf("kind1 rVal =%v kind2 rTyp=%v\n", kind1, kind2)
 	//kind =struct kind=struct
-	
-
 
 	//下面我们将 rVal 转成 interface{}
 	iV := rVal.Interface()
 	fmt.Printf("iv=%v iv type=%T \n", iV, iV)
 	//iv={tom 20} iv type=main.Student
-	//将 interface{} 通过断言转成需要的类型
+
+	//将 interface{} 通过断言转成需要的类型   接口 -> 具体类型
 	//这里，我们就简单使用了一带检测的类型断言.
 	//同学们可以使用 swtich 的断言形式来做的更加的灵活
 	stu, ok := iV.(Student)
@@ -71,12 +70,12 @@ func reflectTest02(b interface{}) {
 
 type Student struct {
 	Name string
-	Age int
+	Age  int
 }
 
 type Monster struct {
 	Name string
-	Age int
+	Age  int
 }
 
 func main() {
@@ -90,10 +89,9 @@ func main() {
 
 	//2. 定义一个Student的实例
 	stu := Student{
-		Name : "tom",
-		Age : 20,
+		Name: "tom",
+		Age:  20,
 	}
 	reflectTest02(stu)
-
 
 }
