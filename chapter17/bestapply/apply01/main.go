@@ -68,7 +68,7 @@ func TestStruct(a interface{}) {
 
 	//var params []reflect.Value
 	//方法的排序默认是按照 函数名的排序（ASCII码）
-	val.Method(1).Call(nil) //获取到第二个方法。调用它
+	val.Method(1).Call(nil) //获取到第二个方法。调用它, 传入空参数
 
 	//调用结构体的第1个方法Method(0)   func (s Monster) GetSum(n1, n2 int) int {}
 	var params []reflect.Value //声明了 []reflect.Value
