@@ -29,15 +29,23 @@ func main() {
 	cols, _ := rows.Columns() //列名
 	buff := make([]interface{}, len(cols))
 	data := make([]string, len(cols))
+	dataKv := make(map[string]string, len(cols))
 	for i, _ := range buff {
 		buff[i] = &data[i]
 	}
 
 	for rows.Next() {
-		rows.Scan(buff...)
+		rows.Scan(buff...) //扫描到buff接口中，实际是字符串类型data中
 	}
 
-	for k, col := range data {
-		fmt.Printf("%30s:\t%s\n", cols[k], col)
+	for k, col := range data { //k是index，col是对应的值
+		//fmt.Printf("%30s:\t%s\n", cols[k], col)
+		dataKv[cols[k]] = col
 	}
+
+	//fmt.Printf("执行结果:%+v\n", dataKv)
+	fmt.Printf("Slave_IO_Running:%+v\n", dataKv["Slave_IO_Running"])
+	fmt.Printf("Slave_SQL_Running:%+v\n", dataKv["Slave_SQL_Running"])
+	fmt.Printf("Seconds_Behind_Master:%+v\n", dataKv["Seconds_Behind_Master"])
+
 }
