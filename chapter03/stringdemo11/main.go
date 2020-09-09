@@ -1,4 +1,5 @@
 package main
+
 import (
 	"fmt"
 )
@@ -46,17 +47,16 @@ func main() {
 
 	fmt.Println(str)
 	//当一个拼接的操作很长时，怎么办，可以分行写,但是注意，需要将+保留在上一行.
-	str4 := "hello " + "world" + "hello " + "world" + "hello " + 
-	"world" + "hello " + "world" + "hello " + "world" + 
-	"hello " + "world"
+	str4 := "hello " + "world" + "hello " + "world" + "hello " +
+		"world" + "hello " + "world" + "hello " + "world" +
+		"hello " + "world"
 	fmt.Println(str4)
 
-
-	var a int // 0
-	var b float32 // 0
-	var c float64 // 0
-	var isMarried bool // false 
-	var name string // ""
+	var a int          // 0
+	var b float32      // 0
+	var c float64      // 0
+	var isMarried bool // false
+	var name string    // ""
 	//这里的%v 表示按照变量的值输出
-	fmt.Printf("a=%d,b=%v,c=%v,isMarried=%v name=%v",a,b,c,isMarried, name)
+	fmt.Printf("a=%d,b='%v',c=%v,isMarried=%v name=%v", a, b, c, isMarried, name)
 }

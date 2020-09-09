@@ -10,5 +10,10 @@ func main() {
 	passwordStr := "root"
 	encodeStr := b64.StdEncoding.EncodeToString([]byte(passwordStr))
 	decodeStr, _ := b64.StdEncoding.DecodeString(encodeStr)
-	fmt.Printf("加密前:%s, 加密后:%s, 解密后:%s", passwordStr, encodeStr, decodeStr)
+	fmt.Printf("加密前:%s, 加密后:%s, 解密后:%s\n\n", passwordStr, encodeStr, decodeStr)
+
+	DecodeStr := "dGVzdDExMQ=="
+	DecodeStrResult, _ := b64.StdEncoding.DecodeString(DecodeStr)
+	fmt.Printf("Base64解密前:%s\nBase64解密后:%s\n", DecodeStr, DecodeStrResult)
+
 }
