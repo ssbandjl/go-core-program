@@ -3,6 +3,7 @@ module go_code
 go 1.14
 
 require (
+	github.com/bitly/go-simplejson v0.5.0
 	github.com/gin-contrib/sessions v0.0.3 // indirect
 	github.com/gin-gonic/gin v1.6.3 // indirect
 	github.com/go-sql-driver/mysql v1.5.0
