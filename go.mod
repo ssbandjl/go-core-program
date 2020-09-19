@@ -6,8 +6,11 @@ require (
 	github.com/bitly/go-simplejson v0.5.0
 	github.com/gin-contrib/sessions v0.0.3 // indirect
 	github.com/gin-gonic/gin v1.6.3 // indirect
+	github.com/go-ini/ini v1.61.0 // indirect
 	github.com/go-sql-driver/mysql v1.5.0
+	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/imdario/mergo v0.3.11 // indirect
+	github.com/minio/minio-go v6.0.14+incompatible // indirect
 	golang.org/x/net v0.0.0-20200813134508-3edf25e44fcc // indirect
 	golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e // indirect
 	k8s.io/api v0.19.0 // indirect
