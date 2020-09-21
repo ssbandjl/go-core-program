@@ -1,0 +1,61 @@
+{
+	"version": "10",
+	"aliases": {
+		"ceph-s3": {
+			"url": "http://172.16.31.201",
+			"accessKey": "4R6RBETBQ7LBCGOSDJ6F",
+			"secretKey": "Iyj06UK2sEekbclI7cCP7aGYsYxFexwZwSVJvDVz",
+			"api": "s3v4",
+			"path": "auto"
+		},
+		"charts": {
+			"url": "https://charts.cloudminds.com",
+			"accessKey": "1L4RFIWH99Y68GNGZ7LZ",
+			"secretKey": "nH83r9eiOH82lTBV+SiZD+Tm9Z6plnpkFKo2s7Vz",
+			"api": "s3v4",
+			"path": "auto"
+		},
+		"dayu": {
+			"url": "http://172.16.31.112",
+			"accessKey": "5373OR9D1ZA5UD6FWE6O",
+			"secretKey": "xPfIfXBjqMnt62dZA9c2wXXCmLVPaMUOmMBt3M6H",
+			"api": "s3v4",
+			"path": "auto"
+		},
+		"gcs": {
+			"url": "https://storage.googleapis.com",
+			"accessKey": "YOUR-ACCESS-KEY-HERE",
+			"secretKey": "YOUR-SECRET-KEY-HERE",
+			"api": "S3v2",
+			"path": "off"
+		},
+		"local": {
+			"url": "http://localhost:9000",
+			"accessKey": "",
+			"secretKey": "",
+			"api": "S3v4",
+			"path": "auto"
+		},
+		"play": {
+			"url": "https://play.min.io",
+			"accessKey": "Q3AM3UQ867SPQQA43P2F",
+			"secretKey": "zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG",
+			"api": "S3v4",
+			"path": "auto"
+		},
+		"res": {
+			"url": "http://src.cloudminds.com",
+			"accessKey": "UFRJ62M7T4OGFDKF1YQC",
+			"secretKey": "PlgC+y5WV+ZEWq08Ufj2jXGcwKvjAWubhyTs1iHh",
+			"api": "s3v4",
+			"path": "auto"
+		},
+		"s3": {
+			"url": "https://s3.amazonaws.com",
+			"accessKey": "6e2633325dd99e3d1 ",
+			"secretKey": "dc167951870585c83f06b03e347ee4ee731c161b90f8d62",
+			"api": "S3v4",
+			"path": "off"
+		}
+	}
+}
