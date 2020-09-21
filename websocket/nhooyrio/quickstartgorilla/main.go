@@ -32,7 +32,7 @@ func main() {
 			return
 		}
 		log.Printf("接收到客户端:%s\n", v)
-		if err := conn.WriteJSON("Hello WebSocket Lient"); err != nil {
+		if err := conn.WriteJSON("Hello WebSocket Client"); err != nil {
 			log.Println(err)
 			return
 		}
