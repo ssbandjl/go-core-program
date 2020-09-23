@@ -13,6 +13,9 @@ require (
 	github.com/minio/minio-go v6.0.14+incompatible // indirect
 	golang.org/x/net v0.0.0-20200813134508-3edf25e44fcc // indirect
 	golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e // indirect
+	gorm.io/driver/mysql v1.0.1
+	gorm.io/driver/sqlite v1.1.3
+	gorm.io/gorm v1.20.1
 	k8s.io/api v0.19.0 // indirect
 	k8s.io/apiextensions-apiserver v0.19.0 // indirect
 	k8s.io/client-go v11.0.0+incompatible // indirect
