@@ -1,12 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"log"
+	"time"
 )
 
 // ...
@@ -38,22 +38,14 @@ func main() {
 	//创建S3服务客户端
 	svc := s3.New(sess)
 
-	//查看所有桶
-	input := &s3.ListBucketsInput{}
-	result, err := svc.ListBuckets(input)
+	//生成预签名URL,允许临时分享文件
+	req, _ := svc.GetObjectRequest(&s3.GetObjectInput{
+		Bucket: aws.String("dms"),
+		Key:    aws.String("vbn-cloudpepper-v3-uit-mcs-mysql/20201009234312/vbn-cloudpepper-v3-uit-mcs-mysql.binlog-on.dump.gz"),
+	})
+	urlStr, err := req.Presign(15 * time.Minute)
 	if err != nil {
-		if aerr, ok := err.(awserr.Error); ok {
-			switch aerr.Code() {
-			default:
-				fmt.Println(aerr.Error())
-			}
-		} else {
-			// Print the error, cast err to awserr.Error to get the Code and
-			// Message from an error.
-			fmt.Println(err.Error())
-		}
-		return
+		log.Println("签名失败", err)
 	}
-
-	fmt.Println(result)
+	log.Println("签名成功,URL:", urlStr)
 }
