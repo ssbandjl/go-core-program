@@ -138,9 +138,9 @@ func main() {
 	}
 
 	//迁移 schema 新建数据表
-	//db.AutoMigrate(&User{}, &Group{}, &Permission{}, &KubernetesInfo{}, &MysqlInstance{}, &MysqlSvcLabel{}, &UserGroup{}, &GroupPermission{})
-	db.AutoMigrate(&User{}, &KubernetesInfo{}, &MysqlInstance{}, &MysqlSvcLabel{})
-	fmt.Printf("数据库自动迁移完成\n")
+	////db.AutoMigrate(&User{}, &Group{}, &Permission{}, &KubernetesInfo{}, &MysqlInstance{}, &MysqlSvcLabel{}, &UserGroup{}, &GroupPermission{})
+	//db.AutoMigrate(&User{}, &KubernetesInfo{}, &MysqlInstance{}, &MysqlSvcLabel{})
+	//fmt.Printf("数据库自动迁移完成\n")
 
 	////收到一个主库
 	//db.Create(&MysqlInstance{
@@ -221,29 +221,45 @@ func main() {
 	//	}
 	//	db.Create(&instanceMaster)
 
-	//收到一个从库
-	//查询其主库
-	var instanceMaster MysqlInstance
-	db.Where("name = ? AND kubernetes_svc=?", "master", "dayu-mysql").First(&instanceMaster)
-	fmt.Printf("查询主库结果:\n%+v", instanceMaster)
+	////收到一个从库
+	////查询其主库
+	//var instanceMaster MysqlInstance
+	//db.Where("name = ? AND kubernetes_svc=?", "master", "dayu-mysql").First(&instanceMaster)
+	//fmt.Printf("查询主库结果:\n%+v", instanceMaster)
+	//
+	////存储从库
+	//instanceSlave := MysqlInstance{
+	//	Name:                     "slave2",
+	//	InstanceType:             "slave",
+	//	Alias:                    "cmdb-mysql-slave2",
+	//	KubernetesNS:             "xinfracloud",
+	//	KubernetesSVC:            "dayu-mysql",
+	//	KubernetesControllerType: "StatefulSet",
+	//	KubernetesController:     "dayu-mysql",
+	//	Port:                     3306,
+	//	RootPassword:             "Y2xvdWRtaW5kc19zcmU=",
+	//	IsDelete:                 false,
+	//	CreateAt:                 time.Now(),
+	//	UserID:                   1,
+	//	KubernetesInfoID:         2,
+	//	MasterInstance:           &instanceMaster,
+	//}
+	//db.Create(&instanceSlave)
 
-	//存储从库
-	instanceSlave := MysqlInstance{
-		Name:                     "slave2",
-		InstanceType:             "slave",
-		Alias:                    "cmdb-mysql-slave2",
-		KubernetesNS:             "xinfracloud",
-		KubernetesSVC:            "dayu-mysql",
-		KubernetesControllerType: "StatefulSet",
-		KubernetesController:     "dayu-mysql",
-		Port:                     3306,
-		RootPassword:             "Y2xvdWRtaW5kc19zcmU=",
-		IsDelete:                 false,
-		CreateAt:                 time.Now(),
-		UserID:                   1,
-		KubernetesInfoID:         2,
-		MasterInstance:           &instanceMaster,
-	}
-	db.Create(&instanceSlave)
+	//查询实例
+	var mysqlInstanceIn MysqlInstance
+	//db.Preload("KubernetesInfo").Where("name=?", "master").First(&instanceInDB)
+	//fmt.Printf("查询主库结果:\n%+v", instanceInDB.KubernetesInfo.ClusterURL)
+
+	////Preload预加载,关联查询
+	//db.Preload("KubernetesInfo", "cluster_url=?", "172.16.24.201").Where("name=?", "master").Find(&instanceInDB)
+	//fmt.Printf("查询主库结果:\n%+v", instanceInDB)
+
+	//Joins预加载
+	//db.Joins("KubernetesInfo", "cluster_url=?", "172.16.24.200").Where("name=?", "master").Find(&instanceInDB)
+	//fmt.Printf("查询主库结果:\n%+v", instanceInDB)
+
+	db.Joins("INNER JOIN kubernetes_cluster ON mysql_instance.kubernetes_id=kubernetes_cluster.id AND kubernetes_cluster.cluster_url = '172.16.24.201'").Where("kubernetes_ns = ? AND kubernetes_svc = ?", "xinfracloud", "dayu-mysql").First(&mysqlInstanceIn)
+	fmt.Printf("查询主库结果:\n%+v", mysqlInstanceIn)
 
 }
