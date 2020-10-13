@@ -7,6 +7,8 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
+	"strconv"
+	"time"
 	"unicode/utf8"
 )
 
@@ -21,18 +23,22 @@ func PreSignV2(accKey, secKey, bucket, object string) (string, error) {
 		StringToSign string
 		params       = url.Values{}
 		baseURL      = "https://s3.harix.iamidata.com"
-		expireTTL    = "4743019496"
+		//expireTTL    = "4743019496"  //URL过期时间,如:604800秒=7天
+		//expireTTL    = "4743019496"  //URL过期时间,如:604800秒=7天
 	)
+	expireTTL   := time.Now().Unix() + 10
+	expireTTLStr := strconv.FormatInt(expireTTL, 10)
+
 	if !utf8.ValidString(bucket) || !utf8.ValidString(object) {
 		return "", errors.New("Invalid utf-8 string")
 	}
-	StringToSign = fmt.Sprintf("GET\n\n\n%s\n/%s/%s", expireTTL, bucket, object)
+	StringToSign = fmt.Sprintf("GET\n\n\n%s\n/%s/%s", expireTTLStr, bucket, object)
 	keyForSign := []byte(secKey)
 	h := hmac.New(sha1.New, keyForSign)
 	h.Write([]byte(StringToSign))
 	sig := base64.StdEncoding.EncodeToString(h.Sum(nil))
 	params.Add("AWSAccessKeyId", accKey)
-	params.Add("Expires", expireTTL)
+	params.Add("Expires", expireTTLStr)
 	params.Add("Signature", sig)
 	return fmt.Sprintf("%s/%s/%s?%s", baseURL, bucket, object, params.Encode()), nil
 }
@@ -42,7 +48,7 @@ func main() {
 		acc    = "5373OR9D1ZA5UD6FWE6O"
 		sec    = "xPfIfXBjqMnt62dZA9c2wXXCmLVPaMUOmMBt3M6H"
 		bucket = "dms"
-		obj    = "vbn-cloudpepper-v3-uit-mcs-mysql/20201009234312/vbn-cloudpepper-v3-uit-mcs-mysql.binlog-on.dump.gz"
+		obj    = "cloudpepper-v3-vbn-pdns-mysql/20200712225308/cloudpepper-v3-vbn-pdns-mysql.log"
 	)
 	url, err := PreSignV2(acc, sec, bucket, obj)
 	fmt.Println(url, err)
