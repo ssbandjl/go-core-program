@@ -95,5 +95,5 @@ func getserviceid(string service, string consulApiPrefix) {
 
 }
 
-//编译: cd /home/icksys/tools/go/deleteService/consul && go build -o deleteService main.go
-//调用示例: go run .\main.go -s auth3-server
+//编译: cd /home/icksys/tools/go/deleteService/consul && go build -o deleteService server.go
+//调用示例: go run .\server.go -s auth3-server

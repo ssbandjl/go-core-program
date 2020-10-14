@@ -48,8 +48,8 @@ func main() {
 		acc    = "5373OR9D1ZA5UD6FWE6O"
 		sec    = "xPfIfXBjqMnt62dZA9c2wXXCmLVPaMUOmMBt3M6H"
 		bucket = "dms"
-		obj    = "cloudpepper-v3-vbn-pdns-mysql/20200712225308/cloudpepper-v3-vbn-pdns-mysql.log"
+		obj    = "slave-dmsdev/20201012093552/slave-dmsdev.binlog-on.dump.gz"
 	)
-	url, err := PreSignV2(acc, sec, bucket, obj)
+	url, err := PreSignV2(bucket, obj)
 	fmt.Println(url, err)
 }

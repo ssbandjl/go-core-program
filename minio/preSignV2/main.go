@@ -1,4 +1,4 @@
-// test project main.go
+// test project server.go
 package main
 
 import (
