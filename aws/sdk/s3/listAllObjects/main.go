@@ -6,6 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"strings"
 )
 
 // ...
@@ -42,14 +43,17 @@ func main() {
 	i := 0
 	err := svc.ListObjectsPages(&s3.ListObjectsInput{
 		Bucket: bucket,
-	}, func(p *s3.ListObjectsOutput, last bool) (shouldContinue bool){
+	}, func(p *s3.ListObjectsOutput, last bool) (shouldContinue bool) {
 		fmt.Println("Page:", i)
 		i += 1
 		for _, obj := range p.Contents {
 			//增加过滤代码
-			if *obj.Key != "vbn-cloudpepper-v3-uit-mcs-mysql/20201009234312/vbn-cloudpepper-v3-uit-mcs-mysql.binlog-on.dump.gz" {
-				fmt.Println("找到该对象:", *obj.Key)
+			if strings.Contains(*obj.Key, "cl-mng-cloudpepper-v3-dit") {
+				fmt.Println("找到该对象:", *obj.Key, *obj.Size)
 			}
+			//if *obj.Key != "vbn-cloudpepper-v3-uit-mcs-mysql/20201009234312/vbn-cloudpepper-v3-uit-mcs-mysql.binlog-on.dump.gz" {
+			//	fmt.Println("找到该对象:", *obj.Key)
+			//}
 		}
 		return true
 	})

@@ -26,7 +26,7 @@ func PreSignV2(accKey, secKey, bucket, object string) (string, error) {
 		//expireTTL    = "4743019496"  //URL过期时间,如:604800秒=7天
 		//expireTTL    = "4743019496"  //URL过期时间,如:604800秒=7天
 	)
-	expireTTL   := time.Now().Unix() + 10
+	expireTTL := time.Now().Unix() + 3600
 	expireTTLStr := strconv.FormatInt(expireTTL, 10)
 
 	if !utf8.ValidString(bucket) || !utf8.ValidString(object) {
@@ -48,8 +48,8 @@ func main() {
 		acc    = "5373OR9D1ZA5UD6FWE6O"
 		sec    = "xPfIfXBjqMnt62dZA9c2wXXCmLVPaMUOmMBt3M6H"
 		bucket = "dms"
-		obj    = "slave-dmsdev/20201012093552/slave-dmsdev.binlog-on.dump.gz"
+		obj    = "cl-mng-cloudpepper-v3-dit-cl-mng-mysql/20201014063403/cl-mng-cloudpepper-v3-dit-cl-mng-mysql.log"
 	)
-	url, err := PreSignV2(bucket, obj)
+	url, err := PreSignV2(acc, sec, bucket, obj)
 	fmt.Println(url, err)
 }
