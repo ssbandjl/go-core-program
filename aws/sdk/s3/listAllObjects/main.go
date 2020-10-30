@@ -48,7 +48,7 @@ func main() {
 		i += 1
 		for _, obj := range p.Contents {
 			//增加过滤代码
-			if strings.Contains(*obj.Key, "cl-mng-cloudpepper-v3-dit") {
+			if strings.Contains(*obj.Key, "mongo") {
 				fmt.Println("找到该对象:", *obj.Key, *obj.Size)
 			}
 			//if *obj.Key != "vbn-cloudpepper-v3-uit-mcs-mysql/20201009234312/vbn-cloudpepper-v3-uit-mcs-mysql.binlog-on.dump.gz" {

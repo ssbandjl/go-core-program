@@ -9,9 +9,13 @@ require (
 	github.com/gin-gonic/gin v1.6.3 // indirect
 	github.com/go-ini/ini v1.61.0 // indirect
 	github.com/go-sql-driver/mysql v1.5.0
+	github.com/goccy/go-graphviz v0.0.8 // indirect
+	github.com/golang/snappy v0.0.2 // indirect
 	github.com/gorilla/websocket v1.4.2
 	github.com/imdario/mergo v0.3.11 // indirect
 	github.com/minio/minio-go v6.0.14+incompatible
+	github.com/xdg/stringprep v1.0.0 // indirect
+	go.mongodb.org/mongo-driver v1.4.2
 	golang.org/x/net v0.0.0-20201009032441-dbdefad45b89 // indirect
 	golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e // indirect
 	gorm.io/driver/mysql v1.0.1

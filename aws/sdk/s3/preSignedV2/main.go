@@ -48,7 +48,7 @@ func main() {
 		acc    = "5373OR9D1ZA5UD6FWE6O"
 		sec    = "xPfIfXBjqMnt62dZA9c2wXXCmLVPaMUOmMBt3M6H"
 		bucket = "dms"
-		obj    = "cl-mng-cloudpepper-v3-dit-cl-mng-mysql/20201014063403/cl-mng-cloudpepper-v3-dit-cl-mng-mysql.log"
+		obj    = "mongodb-poc-test/20201023093654/mongodb-poc-test.log"
 	)
 	url, err := PreSignV2(acc, sec, bucket, obj)
 	fmt.Println(url, err)
