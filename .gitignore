@@ -1,5 +1,7 @@
 .idea
 *.log
 *.exe
+*.profile
+profile
 .vscode
 
