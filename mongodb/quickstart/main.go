@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -17,6 +18,9 @@ const (
 func main() {
 	// 设置客户端连接配置
 	clientOptions := options.Client().ApplyURI(MongoDBUri)
+	//clientOptions.SetConnectTimeout(time.Second * 3)  //设置连接超时时间, 创建连接到服务器间的超时时间 ,参考:https://github.com/mongodb/mongo-go-driver/blob/master/mongo/options/clientoptions.go
+	//clientOptions.SetSocketTimeout(time.Second * 3)  //设置套接字超时时间, 即驱动等待套接字可以读取的时间
+	clientOptions.SetServerSelectionTimeout(time.Second * 3) //设置服务器可用超时时间, 即驱动执行find命名的超时时间
 
 	// 连接到MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)
