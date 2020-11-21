@@ -15,16 +15,16 @@ import (
 )
 
 //封装S3结构
-type Client struct {
-	AK       string
-	SK       string
-	EP       string
-	session  *session.Session
-	S3Client *s3.S3
+type S3 struct {
+	AK      string
+	SK      string
+	EP      string
+	session *session.Session
+	Client  *s3.S3
 }
 
-func NewClient() *Client {
-	var instance = Client{
+func NewClient() *S3 {
+	var instance = S3{
 		AK: "5373OR9D1ZA5UD6FWE6O",
 		SK: "xPfIfXBjqMnt62dZA9c2wXXCmLVPaMUOmMBt3M6H",
 		EP: "s3.harix.iamidata.com",
@@ -39,15 +39,15 @@ func NewClient() *Client {
 	})
 	//log.Printf("会话:%+v", sess)
 	//创建S3服务客户端
-	instance.S3Client = s3.New(sess)
+	instance.Client = s3.New(sess)
 	instance.session = sess
 	return &instance
 }
 
-func (this *Client) ListObjectsPages() {
+func (this *S3) ListObjectsPages() {
 	//查看桶下所有对象
 	i := 0
-	err := this.S3Client.ListObjectsPages(&s3.ListObjectsInput{
+	err := this.Client.ListObjectsPages(&s3.ListObjectsInput{
 		Bucket: aws.String("dms"),
 	}, func(p *s3.ListObjectsOutput, last bool) (shouldContinue bool) {
 		fmt.Println("Page:", i)
@@ -69,7 +69,7 @@ func (this *Client) ListObjectsPages() {
 }
 
 //下载文件
-func (this *Client) S3CopyFile2Local(bucket, object, localFileName string) (bool, error) {
+func (this *S3) S3CopyFile2Local(bucket, object, localFileName string) (bool, error) {
 	downloader := s3manager.NewDownloader(this.session)
 	// Create a file to write the S3 Object contents to.
 	f, err := os.Create(localFileName)
