@@ -31,13 +31,26 @@ func Logger() gin.HandlerFunc {
 }
 
 func main() {
-	r := gin.New()
+	//r := gin.New()
+
+	//默认Gin引擎Engine使用了Logger(记录请求信息)Recovery(从Panic中恢复)中间件: engine.Use(Logger(), Recovery())
+	//Logger 支持记录一个API请求发生时间，返回Status Code，Latency(耗时)，远端IP，请求方法, 请求路径(URL Path)
+	r := gin.Default()
+
 	r.Use(Logger())
 
 	r.GET("/ping", func(c *gin.Context) {
 		example := c.MustGet("example").(string) //使用MustGet方法获取键值
 		// 读取中间件在上下文中存储的内容
 		log.Printf("中间件在上线文中存储的键值, key:example, value:%s", example)
+
+		// Gin无法恢复gorouting中的panic, 因为任何gorouting中发生了panic，都会panic整个程序。每个gorouting需要自己处理panic
+		go func() {
+			panic("Panic in Gorouting")
+		}()
+		// Gin可以恢复Handler中的panic
+		//panic("Panic in Handler!")
+
 		// 返回
 		c.JSON(http.StatusOK, gin.H{"Response": "OK"})
 	})
