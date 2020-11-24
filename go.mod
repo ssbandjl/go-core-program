@@ -8,6 +8,7 @@ require (
 	github.com/gin-contrib/sessions v0.0.3 // indirect
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-ini/ini v1.61.0 // indirect
+	github.com/go-redis/redis/v8 v8.4.0 // indirect
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/goccy/go-graphviz v0.0.8 // indirect
 	github.com/golang/snappy v0.0.2 // indirect

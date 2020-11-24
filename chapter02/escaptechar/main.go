@@ -1,6 +1,9 @@
 package main
 
-import "fmt" //fmt包中提供格式化，输出，输入的函数.
+import (
+	"fmt"
+	"log"
+) //fmt包中提供格式化，输出，输入的函数.
 
 //这是一个main函数，是程序入口
 func main() {
@@ -15,12 +18,15 @@ func main() {
 	// \r 回车,从当前行的最前面开始输出，覆盖掉以前内容
 	fmt.Println("天龙八部雪山飞狐\r张飞厉害")
 
-	fmt.Println("helloworldhelloworldhelloworldhelloworl\n", 
-		"dhelloworldhelloworldhelloworldhelloworldhelloworldhellowor\n", 
-		"ldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworl\n", 
-		"dhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhel\n", 
-		"loworldhelloworldhelloworldhelloworldhelloworldhelloworldhellowor\n", 
+	fmt.Println("helloworldhelloworldhelloworldhelloworl\n",
+		"dhelloworldhelloworldhelloworldhelloworldhelloworldhellowor\n",
+		"ldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworl\n",
+		"dhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhel\n",
+		"loworldhelloworldhelloworldhelloworldhelloworldhelloworldhellowor\n",
 		"ldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworld")
 
-	//var num = 2 + 4 * 5 
+	//var num = 2 + 4 * 5
+
+	// 移位运算符, 2 << 10 = 2048
+	log.Printf("移位运算符结果:%d", 2<<10)
 }
