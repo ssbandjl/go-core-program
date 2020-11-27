@@ -41,16 +41,22 @@ func main() {
 		c.YAML(http.StatusOK, gin.H{"message": "hey", "status": http.StatusOK})
 	})
 
+	//Protocol buffers are a language-neutral, platform-neutral extensible mechanism for serializing structured data.
+	//Protocol buffers(简称ProtoBuf)是来自Google的一个跨语言,跨平台,用于将结构化数据序列化的可扩展机制,
+	//详见:https://developers.google.com/protocol-buffers
 	r.GET("/someProtoBuf", func(c *gin.Context) {
 		reps := []int64{int64(1), int64(2)}
 		label := "test"
 		// The specific definition of protobuf is written in the testdata/protoexample file.
+		// 使用protoexample.Test这个特别的protobuf结构来定义测试数据
 		data := &protoexample.Test{
 			Label: &label,
 			Reps:  reps,
 		}
-		// Note that data becomes binary data in the response
+		// Note that data becomes binary data in the response  //将data序列化为二进制的响应数据
 		// Will output protoexample.Test protobuf serialized data
+		// ProtoBuf serializes the given struct as ProtoBuf into the response body.
+		// ProtoBuf方法将给定的结构序列化为ProtoBuf响应体
 		c.ProtoBuf(http.StatusOK, data)
 	})
 
