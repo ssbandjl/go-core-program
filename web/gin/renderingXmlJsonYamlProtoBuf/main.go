@@ -81,5 +81,4 @@ status: 200
 
 curl http://localhost:8080/someProtoBuf
 test
-
 */
