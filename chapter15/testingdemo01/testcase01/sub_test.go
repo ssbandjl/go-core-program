@@ -1,4 +1,5 @@
 package cal
+
 import (
 	_ "fmt"
 	"testing" //引入go 的testing框架包
@@ -7,7 +8,7 @@ import (
 //编写要给测试用例，去测试addUpper是否正确
 func TestGetSub(t *testing.T) {
 
-	//调用
+	//调用, 10 - 3 = 7
 	res := getSub(10, 3)
 	if res != 7 {
 		//fmt.Printf("AddUpper(10) 执行错误，期望值=%v 实际值=%v\n", 55, res)
@@ -19,3 +20,4 @@ func TestGetSub(t *testing.T) {
 
 }
 
+//测试单个文件, 要加上原文件: go test -v sub_test.go cal.go

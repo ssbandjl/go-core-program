@@ -11,7 +11,7 @@ require (
 	github.com/gin-gonic/autotls v0.0.3
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-ini/ini v1.61.0 // indirect
-	github.com/go-redis/redis/v8 v8.4.0 // indirect
+	github.com/go-redis/redis/v8 v8.4.0
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/goccy/go-graphviz v0.0.8 // indirect
 	github.com/golang/protobuf v1.4.3 // indirect

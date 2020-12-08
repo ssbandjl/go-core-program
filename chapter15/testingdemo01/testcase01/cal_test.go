@@ -1,12 +1,14 @@
 package cal
+
 import (
 	"fmt"
+	"log"
 	"testing" //引入go 的testing框架包
 )
 
 //编写要给测试用例，去测试addUpper是否正确
 func TestAddUpper(t *testing.T) {
-
+	log.Printf("TestAddUpper 累加运算被测试")
 	//调用
 	res := addUpper(10)
 	if res != 55 {
@@ -24,3 +26,7 @@ func TestHello(t *testing.T) {
 	fmt.Println("TestHello被调用..")
 
 }
+
+// 执行测试 go test
+
+// 测试单个方法 go test -test.run TestAddUpper
