@@ -67,7 +67,7 @@ func NewFileDownloader(url, outputFileName, outputDir string, totalPart int) *Fi
 type filePart struct {
 	Index int    //文件分片的序号
 	From  int    //开始byte
-	To    int    //解决byte
+	To    int    //结束byte
 	Data  []byte //http下载得到的文件内容
 }
 
@@ -80,7 +80,7 @@ func main() {
 		// fmt.Printf("\n%s", err)
 		log.Fatal(err)
 	}
-	fmt.Printf("\n 文件下载完成耗时: %f second\n", time.Now().Sub(startTime).Seconds())
+	fmt.Printf("\n 文件下载完成耗时: %f second\n", time.Now().Sub(startTime).Seconds()) //结束时间-开始时间的秒数
 }
 
 //head 获取要下载的文件的基本信息(header) 使用HTTP Method Head
