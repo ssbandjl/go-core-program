@@ -9,6 +9,7 @@ require (
 	github.com/gin-contrib/multitemplate v0.0.0-20200916052041-666a7309d230 // indirect
 	github.com/gin-contrib/sessions v0.0.3 // indirect
 	github.com/gin-gonic/autotls v0.0.3
+	github.com/gin-gonic/contrib v0.0.0-20201101042839-6a891bf89f19 // indirect
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-ini/ini v1.61.0 // indirect
 	github.com/go-redis/redis/v8 v8.4.0
@@ -21,6 +22,7 @@ require (
 	github.com/jessevdk/go-assets v0.0.0-20160921144138-4f4301a06e15 // indirect
 	github.com/jessevdk/go-assets-builder v0.0.0-20130903091706-b8483521738f // indirect
 	github.com/minio/minio-go v6.0.14+incompatible
+	github.com/smartystreets/goconvey v1.6.4
 	github.com/xdg/stringprep v1.0.0 // indirect
 	go.mongodb.org/mongo-driver v1.4.2
 	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a
