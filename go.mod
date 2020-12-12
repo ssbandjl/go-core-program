@@ -5,6 +5,7 @@ go 1.14
 require (
 	github.com/aws/aws-sdk-go v1.35.6
 	github.com/bitly/go-simplejson v0.5.0
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-contrib/cors v1.3.1 // indirect
 	github.com/gin-contrib/multitemplate v0.0.0-20200916052041-666a7309d230 // indirect
 	github.com/gin-contrib/sessions v0.0.3 // indirect
