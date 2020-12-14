@@ -22,6 +22,7 @@ require (
 	github.com/imdario/mergo v0.3.11 // indirect
 	github.com/jessevdk/go-assets v0.0.0-20160921144138-4f4301a06e15 // indirect
 	github.com/jessevdk/go-assets-builder v0.0.0-20130903091706-b8483521738f // indirect
+	github.com/lib/pq v1.9.0
 	github.com/minio/minio-go v6.0.14+incompatible
 	github.com/smartystreets/goconvey v1.6.4
 	github.com/xdg/stringprep v1.0.0 // indirect
