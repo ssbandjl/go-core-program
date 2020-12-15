@@ -40,6 +40,15 @@ func (this *Db) CreateTable() {
 	fmt.Println("Finished creating table")
 }
 
+// 删除表
+func (this *Db) DropTable() {
+	// 以水果库存清单表inventory为例
+	// Drop previous table of same name if one exists.  如果之前存在清单表, 则删除该表
+	_, err := this.db.Exec("DROP TABLE IF EXISTS inventory;")
+	checkError(err)
+	fmt.Println("Finished dropping table (if existed)")
+}
+
 // 增加数据
 func (this *Db) Insert() {
 	// Insert some data into table. 插入3条水果数据
@@ -78,6 +87,24 @@ func (this *Db) Read() {
 	}
 }
 
+// 更新数据
+func (this *Db) Update() {
+	// Modify some data in table.
+	sql_statement := "UPDATE inventory SET quantity = $2 WHERE name = $1;"
+	_, err := this.db.Exec(sql_statement, "banana", 200)
+	checkError(err)
+	fmt.Println("Updated 1 row of data")
+}
+
+// 删除数据
+func (this *Db) Delete() {
+	// Delete some data from table.
+	sql_statement := "DELETE FROM inventory WHERE name = $1;"
+	_, err := this.db.Exec(sql_statement, "orange")
+	checkError(err)
+	fmt.Println("Deleted 1 row of data")
+}
+
 func main() {
 	// Initialize connection string. 初始化连接字符串, 参数包含主机,端口,用户名,密码,数据库名,SSL模式(禁用),超时时间
 	var connectionString string = fmt.Sprintf("host=%s  port=%d user=%s password=%s dbname=%s sslmode=disable connect_timeout=3", HOST, PORT, USER, PASSWORD, DATABASE)
@@ -93,8 +120,12 @@ func main() {
 	checkError(err)
 	fmt.Println("Successfully created connection to database")
 
-	//postgresDb.CreateTable()
-	//postgresDb.Insert()
+	postgresDb.CreateTable()
+	postgresDb.Insert()
 	postgresDb.Read()
-
+	postgresDb.Update()
+	postgresDb.Read()
+	postgresDb.Delete()
+	postgresDb.Read()
+	postgresDb.DropTable()
 }
