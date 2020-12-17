@@ -2,8 +2,10 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	_ "github.com/lib/pq"
+	"log"
 )
 
 const (
@@ -105,6 +107,85 @@ func (this *Db) Delete() {
 	fmt.Println("Deleted 1 row of data")
 }
 
+// 数据序列化为Json字符串, 便于人工查看
+func Data2Json(anyData interface{}) string {
+	JsonByte, err := json.Marshal(anyData)
+	if err != nil {
+		log.Printf("数据序列化为json出错:\n%s\n", err.Error())
+		return ""
+	}
+	return string(JsonByte)
+}
+
+//多行数据解析
+func QueryAndParseRows(Db *sql.DB, queryStr string) []map[string]string {
+	rows, err := Db.Query(queryStr)
+	defer rows.Close()
+	if err != nil {
+		log.Printf("查询出错:\nSQL:\n%s, 错误详情\n", queryStr, err.Error())
+		return nil
+	}
+	cols, _ := rows.Columns() //列名
+	if len(cols) > 0 {
+		var ret []map[string]string //定义返回的映射切片变量ret
+		for rows.Next() {
+			buff := make([]interface{}, len(cols))
+			data := make([][]byte, len(cols)) //数据库中的NULL值可以扫描到字节中
+			for i, _ := range buff {
+				buff[i] = &data[i]
+			}
+			rows.Scan(buff...) //扫描到buff接口中，实际是字符串类型data中
+
+			//将每一行数据存放到数组中
+			dataKv := make(map[string]string, len(cols))
+			for k, col := range data { //k是index，col是对应的值
+				//fmt.Printf("%30s:\t%s\n", cols[k], col)
+				dataKv[cols[k]] = string(col)
+			}
+			ret = append(ret, dataKv)
+		}
+		log.Printf("返回多元素数组:\n%s", Data2Json(ret))
+		return ret
+	} else {
+		return nil
+	}
+}
+
+//单行数据解析 查询数据库，解析查询结果，支持动态行数解析
+func QueryAndParse(Db *sql.DB, queryStr string) map[string]string {
+	rows, err := Db.Query(queryStr)
+	defer rows.Close()
+
+	if err != nil {
+		log.Printf("查询出错:\nSQL:\n%s, 错误详情\n", queryStr, err.Error())
+		return nil
+	}
+	//rows, _ := Db.Query("SHOW VARIABLES LIKE '%data%'")
+
+	cols, _ := rows.Columns()
+	if len(cols) > 0 {
+		buff := make([]interface{}, len(cols)) // 临时slice
+		data := make([][]byte, len(cols))      // 存数据slice
+		dataKv := make(map[string]string, len(cols))
+		for i, _ := range buff {
+			buff[i] = &data[i]
+		}
+
+		for rows.Next() {
+			rows.Scan(buff...) // ...是必须的
+		}
+
+		for k, col := range data {
+			dataKv[cols[k]] = string(col)
+			//fmt.Printf("%30s:\t%s\n", cols[k], col)
+		}
+		log.Printf("返回单行数据Map:\n%s", Data2Json(dataKv))
+		return dataKv
+	} else {
+		return nil
+	}
+}
+
 func main() {
 	// Initialize connection string. 初始化连接字符串, 参数包含主机,端口,用户名,密码,数据库名,SSL模式(禁用),超时时间
 	var connectionString string = fmt.Sprintf("host=%s  port=%d user=%s password=%s dbname=%s sslmode=disable connect_timeout=3", HOST, PORT, USER, PASSWORD, DATABASE)
@@ -120,12 +201,14 @@ func main() {
 	checkError(err)
 	fmt.Println("Successfully created connection to database")
 
-	postgresDb.CreateTable()
-	postgresDb.Insert()
+	postgresDb.CreateTable()                                     //创建表
+	postgresDb.Insert()                                          //插入数据
+	postgresDb.Read()                                            //查询数据
+	QueryAndParseRows(postgresDb.db, "SELECT * from inventory;") //直接查询和解析多行数据
+	QueryAndParse(postgresDb.db, "SHOW DateStyle;")              //直接查询和解析单行数据
+	postgresDb.Update()                                          //修改/更新数据
 	postgresDb.Read()
-	postgresDb.Update()
-	postgresDb.Read()
-	postgresDb.Delete()
+	postgresDb.Delete() //删除数据
 	postgresDb.Read()
 	postgresDb.DropTable()
 }
