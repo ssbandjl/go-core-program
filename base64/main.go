@@ -15,8 +15,7 @@ func main() {
 	fmt.Printf("加密前:%s, 加密后:%s, 解密后:%s\n\n", passwordStr, encodeStr, decodeStr)
 
 	//输入待解码的密码
-	DecodeStr := "Y3JzczEyMzQ1Ng=="
+	DecodeStr := "Y2xvdWQxNjg4"
 	DecodeStrResult, _ := b64.StdEncoding.DecodeString(DecodeStr)
-	fmt.Printf("Base64解密前:%s\nBase64解密后:%s\n", DecodeStr, DecodeStrResult)
-
+	fmt.Printf("Base64解密前:%s\nBase64解密后:%sEND\n", DecodeStr, DecodeStrResult)
 }
