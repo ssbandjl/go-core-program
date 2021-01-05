@@ -413,3 +413,12 @@
   | 385_尚硅谷_Go核心编程_vscode插件的安装.wmv                   |                 |      |
   | 386_尚硅谷_Go核心编程_vscode快捷键.avi                       |                 |      |
   | 387_尚硅谷_Go核心编程_结束语.wmv                             |                 |      |
+
+
+
+# 分类导航
+
+- 测试
+  + [官方文档](https://golang.org/pkg/testing/)
+    * [测试参数Testing flags](https://golang.org/cmd/go/#hdr-Testing_flags)
+
