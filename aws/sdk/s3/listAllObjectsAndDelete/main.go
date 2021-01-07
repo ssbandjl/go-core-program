@@ -3,9 +3,12 @@ package main
 import (
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"log"
+	"time"
 )
 
 // ...
@@ -61,7 +64,36 @@ func main() {
 			//	fmt.Println("找到该对象:", *obj.Key)
 			//}
 			//log.Printf("对象:%s, 大小:%d字节, %dMB", *obj.Key, *obj.Size, *obj.Size/1024/1024)
-			myLogger.Log.Printf("对象:%s, 创建时间:%s, 大小:%d字节, %dMB", *obj.Key, *obj.LastModified, *obj.Size, *obj.Size/1024/1024)
+			//myLogger.Log.Printf("对象:%s, 创建时间:%s, 大小:%d字节, %dMB", *obj.Key, *obj.LastModified, *obj.Size, *obj.Size/1024/1024)
+			if obj.LastModified.Before(time.Now().AddDate(0, 0, -30)) {
+				log.Printf("删除对象:%s, 最后编辑时间:%s, 大小:%d字节, %dMB", *obj.Key, *obj.LastModified, *obj.Size, *obj.Size/1024/1024)
+				myLogger.Log.Printf("删除对象:%s, 最后编辑时间:%s, 大小:%d字节, %dMB", *obj.Key, *obj.LastModified, *obj.Size, *obj.Size/1024/1024)
+				//删除
+				input := &s3.DeleteObjectInput{
+					Bucket: bucket,
+					Key:    aws.String(*obj.Key),
+				}
+				_, err := svc.DeleteObject(input) //忽略result
+				if err != nil {
+					if aerr, ok := err.(awserr.Error); ok {
+						switch aerr.Code() {
+						default:
+							//Log4Zap(zap.InfoLevel).Info(fmt.Sprintf("删除对象失败,桶:%s, 对象:%s, 错误:%s", bucket, object, aerr.Error()))
+							log.Printf("删除失败, 对象%s, 错误:%s", *obj.Key, aerr.Error())
+							myLogger.Log.Printf("删除失败, 对象%s, 错误:%s", *obj.Key, aerr.Error())
+							continue
+						}
+					} else {
+						// Print the error, cast err to awserr.Error to get the Code and
+						// Message from an error.
+						//Log4Zap(zap.InfoLevel).Info(fmt.Sprintf("删除对象失败,桶:%s, 对象:%s, 错误:%s", bucket, object, err.Error()))
+						log.Printf("删除失败, 对象%s, 错误:%s", *obj.Key, err.Error())
+						myLogger.Log.Printf("删除失败, 对象%s, 错误:%s", *obj.Key, err.Error())
+						continue
+					}
+				}
+
+			}
 		}
 		return true
 	})
