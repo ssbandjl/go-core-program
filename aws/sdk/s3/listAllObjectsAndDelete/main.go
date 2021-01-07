@@ -12,6 +12,7 @@ import (
 )
 
 // ...
+
 func main() {
 	//初始化日志记录器
 	myLogger := MyLogger{}
@@ -65,6 +66,7 @@ func main() {
 			//}
 			//log.Printf("对象:%s, 大小:%d字节, %dMB", *obj.Key, *obj.Size, *obj.Size/1024/1024)
 			//myLogger.Log.Printf("对象:%s, 创建时间:%s, 大小:%d字节, %dMB", *obj.Key, *obj.LastModified, *obj.Size, *obj.Size/1024/1024)
+			//删除LastModified时间, 为30天前的所有数据
 			if obj.LastModified.Before(time.Now().AddDate(0, 0, -30)) {
 				log.Printf("删除对象:%s, 最后编辑时间:%s, 大小:%d字节, %dMB", *obj.Key, *obj.LastModified, *obj.Size, *obj.Size/1024/1024)
 				myLogger.Log.Printf("删除对象:%s, 最后编辑时间:%s, 大小:%d字节, %dMB", *obj.Key, *obj.LastModified, *obj.Size, *obj.Size/1024/1024)
