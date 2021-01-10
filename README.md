@@ -1,4 +1,38 @@
 # 简介
+
+
+# 分类导航
+
+- 测试
+  + [官方文档](https://golang.org/pkg/testing/)
+    * [测试参数Testing flags](https://golang.org/cmd/go/#hdr-Testing_flags)
+- [并发编程实战课](./concurrent)
+  
+  - [Channel](./concurrent/channel)
+    
+    - [13 | Channel：另辟蹊径，解决并发问题](./concurrent/channel/basic.md)
+    
+      + 核心
+        + channel发展/CSP通信顺序进程/channel的5种应用场景/基本用法/实现原理/使用 Channel 容易犯的错误/goroutine 泄漏/总结
+    
+    - [14 | Channel：透过代码看典型的应用模式](./concurrent/channel/example.md)
+    
+      + 核心
+    
+        + 使用反射操作Channel/动态处理 n 个 chan/
+    
+        - 典型的应用场景:消息交流/数据传递/token实现任务编排/任务编排/信号通知/实现互斥锁/happens-before关系/
+        - 多个 chan 的编排方式
+          + Or-Done 模式/扇入模式/扇出模式/Stream/map-reduce
+    
+    - [15 | 内存模型：Go如何保证并发读写的顺序？](./concurrent/channel/example.md)
+    
+    + [16 | Semaphore：一篇文章搞懂信号量](./concurrent/channel/semaphore/README.md)
+
+
+
+
+
 - **目录**
 
   | chapter02 |golang基本入门/转义字符            |
@@ -421,4 +455,7 @@
 - 测试
   + [官方文档](https://golang.org/pkg/testing/)
     * [测试参数Testing flags](https://golang.org/cmd/go/#hdr-Testing_flags)
+- [并发编程实战课](./concurrent)
+  - [Channel](./concurrent/channel)
+    + [16 | Semaphore：一篇文章搞懂信号量](./concurrent/channel/semaphore/README.md)
 
