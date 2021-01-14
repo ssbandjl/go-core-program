@@ -3,9 +3,17 @@
 
 # 分类导航
 
+- 编码
+
+  - 字符编码
+
+    +  [记一次websocket开发中对字符编码的理解](https://zhuanlan.zhihu.com/p/67522753)
+
 - 测试
+  
   + [官方文档](https://golang.org/pkg/testing/)
     * [测试参数Testing flags](https://golang.org/cmd/go/#hdr-Testing_flags)
+  
 - [并发编程实战课](./concurrent)
 
   - [Channel](./concurrent/channel)

@@ -3,8 +3,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/gorilla/websocket"
+	"log"
 	"net/http"
+
+	"github.com/gorilla/websocket"
 )
 
 //协议升级器,将HTTP协议升级为websocket协议,简称ws或wss(https)
@@ -17,6 +19,7 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
+// main ws服务器
 func main() {
 	//用http包新建/ws接口, 作为websocket服务端
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
@@ -39,7 +42,7 @@ func main() {
 			// Read message from browser 从浏览器读取消息
 			msgType, msg, err := conn.ReadMessage()
 			if err != nil {
-				fmt.Printf("[ERROR]从连接中读取消息失败,%+v\n", err)
+				log.Printf("[ERROR]从连接中读取消息失败,%s", err.Error()) //前端可能关闭了连接
 				return
 			}
 			fmt.Printf("megType:%d, receiveMsg:%s\n", msgType, receiveMsg)
