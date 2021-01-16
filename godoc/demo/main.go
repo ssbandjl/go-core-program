@@ -6,6 +6,7 @@ import (
 	"os"
 )
 
+// main 执行godoc后的HTML页面:https://golang.org/pkg/encoding/gob/
 func main() {
 	info := map[string]string{
 		"name":    "C语言中文网",
