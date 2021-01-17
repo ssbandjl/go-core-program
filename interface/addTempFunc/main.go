@@ -16,7 +16,8 @@ func (self HelloWorld) Print() {
 
 func main() {
 	var h Hello
+	para := "我是参数"
 	// 零时给接口增加方法, 接口转换
-	h.(interface{ TempFunc() }).TempFunc()
+	h.(interface{ TempFunc(para string) }).TempFunc(para)
 
 }
