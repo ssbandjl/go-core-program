@@ -3,6 +3,8 @@
 
 # 分类导航
 
+- [channel](./channel/README.md)
+
 - 编码
 
   - 字符编码
