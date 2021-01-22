@@ -25,6 +25,7 @@ require (
 	github.com/jessevdk/go-assets-builder v0.0.0-20130903091706-b8483521738f // indirect
 	github.com/lib/pq v1.9.0
 	github.com/minio/minio-go v6.0.14+incompatible
+	github.com/petermattis/goid v0.0.0-20180202154549-b0b1615b78e5
 	github.com/smartystreets/goconvey v1.6.4
 	github.com/xdg/stringprep v1.0.0 // indirect
 	go.mongodb.org/mongo-driver v1.4.2

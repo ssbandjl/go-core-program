@@ -14,10 +14,13 @@ import (
 	"time"
 )
 
+// GoID 获取goroutine id
 func GoID() int {
 	var buf [64]byte
-	n := runtime.Stack(buf[:], false)
-	idField := strings.Fields(strings.TrimPrefix(string(buf[:n]), "goroutine "))[0]
+	n := runtime.Stack(buf[:], false) //all如果为真, 则记录所有goroutine, 为假时表示当前goroutine
+	// log.Printf("协程栈帧信息:%s", string((buf[:n])))
+	// log.Printf("去掉前缀后:%s", strings.TrimPrefix(string(buf[:n]), "goroutine "))
+	idField := strings.Fields(strings.TrimPrefix(string(buf[:n]), "goroutine "))[0] //去除前缀, 并按默认分隔符分割为切片, 获取切片第一个元素, 即得到goroutine id
 	id, err := strconv.Atoi(idField)
 	if err != nil {
 		panic(fmt.Sprintf("cannot get goroutine id: %v", err))
