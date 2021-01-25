@@ -12,8 +12,8 @@ import (
 
 // 复制Mutex定义的常量
 const (
-	mutexLocked      = 1 << iota // 1 加锁标识位置 , iota从0开始, 由于值左移了一位, 所以结果是指数型递增
-	mutexWoken                   // 2 唤醒标识位置
+	mutexLocked      = 1 << iota // 1 加锁标识位置 , iota从0开始, 将1往左, 移位运算0次, 所以结果是指数型递增
+	mutexWoken                   // 2 唤醒标识位置  移位1次
 	mutexStarving                // 4 锁饥饿标识位置
 	mutexWaiterShift = iota      // 3 标识waiter的起始bit位置
 )
