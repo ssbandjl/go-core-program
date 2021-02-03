@@ -12,6 +12,7 @@ require (
 	github.com/gin-gonic/autotls v0.0.3
 	github.com/gin-gonic/contrib v0.0.0-20201101042839-6a891bf89f19 // indirect
 	github.com/gin-gonic/gin v1.6.3
+	github.com/go-errors/errors v1.1.1 // indirect
 	github.com/go-ini/ini v1.61.0 // indirect
 	github.com/go-redis/redis/v8 v8.4.0
 	github.com/go-sql-driver/mysql v1.5.0
@@ -27,6 +28,7 @@ require (
 	github.com/minio/minio-go v6.0.14+incompatible
 	github.com/petermattis/goid v0.0.0-20180202154549-b0b1615b78e5
 	github.com/smartystreets/goconvey v1.6.4
+	github.com/viant/toolbox v0.33.2
 	github.com/xdg/stringprep v1.0.0 // indirect
 	go.mongodb.org/mongo-driver v1.4.2
 	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a
