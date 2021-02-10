@@ -17,9 +17,9 @@ func TestInspectAST(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	//golang提供了ast.Inspect方法供我们遍历整个AST树
+	// golang提供了ast.Inspect方法供我们遍历整个AST树，比如下面例子遍历整个example/test1.go文件寻找所有return返回的地方
 	ast.Inspect(f, func(n ast.Node) bool {
-		// Find Return Statements
+		// Find Return Statements 查找返回语句
 		ret, ok := n.(*ast.ReturnStmt)
 		if ok {
 			fmt.Printf("return statement found on line %v:\n", fset.Position(ret.Pos()))
