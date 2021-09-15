@@ -1,5 +1,5 @@
 /*
-https://studygolang.com/articles/19353
+golang深入源代码系列之一：AST的遍历:https://studygolang.com/articles/19353
 */
 package main
 
