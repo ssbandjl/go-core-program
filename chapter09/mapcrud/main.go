@@ -1,4 +1,5 @@
 package main
+
 import (
 	"fmt"
 )
@@ -12,7 +13,7 @@ func main() {
 	fmt.Println(cities)
 
 	//因为 no3这个key已经存在，因此下面的这句话就是修改
-	cities["no3"] = "上海~" 
+	cities["no3"] = "上海~"
 	fmt.Println(cities)
 
 	//演示删除
@@ -22,7 +23,6 @@ func main() {
 	delete(cities, "no4")
 	fmt.Println(cities)
 
-
 	//演示map的查找
 	val, ok := cities["no2"]
 	if ok {
@@ -30,6 +30,8 @@ func main() {
 	} else {
 		fmt.Printf("没有no1 key\n")
 	}
+
+	fmt.Printf("直接查询:%v\n", cities["no00000"])
 
 	//如果希望一次性删除所有的key
 	//1. 遍历所有的key,如何逐一删除 [遍历]
