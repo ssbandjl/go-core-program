@@ -3,10 +3,12 @@ module go_code
 go 1.14
 
 require (
+	github.com/allegro/bigcache v1.2.1
 	github.com/aws/aws-sdk-go v1.35.6
 	github.com/bitly/go-simplejson v0.5.0
 	github.com/codeclysm/extract v2.2.0+incompatible // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/garyburd/redigo v1.6.2
 	github.com/ghodss/yaml v1.0.0
 	github.com/gin-contrib/cors v1.3.1 // indirect
 	github.com/gin-contrib/multitemplate v0.0.0-20200916052041-666a7309d230 // indirect

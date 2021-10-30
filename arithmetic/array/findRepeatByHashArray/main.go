@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-//查找重复的树,使用hash法
+//查找重复的数,使用hash法
 
 func FindDupByHash(arr []int) int {
 	if arr == nil {

@@ -12,7 +12,7 @@ func main() {
 	tm := time.Unix(ts, 0)
 	fmt.Println(tm.Format("2006-01-02"))
 	date, _ := time.Parse("2006-01-02", tm.Format("2006-01-02"))
-	fmt.Println(date)
+	fmt.Println("date", date)
 
 	timeStr := "210102 13:14:15"
 	log.Printf("时间格式化:%s", tm.Format("200102 15:04:05"))
