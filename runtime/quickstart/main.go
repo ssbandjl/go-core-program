@@ -12,5 +12,6 @@ func main() {
 	if ok {
 		f := runtime.FuncForPC(pc)
 		fmt.Printf("文件:%s: 行数:%d 方法名:%s\n", file, line, f.Name())
+
 	}
 }

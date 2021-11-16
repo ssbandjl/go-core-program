@@ -30,14 +30,17 @@ func main() {
 
 			log.Printf("运动员#%d 已准备就绪\n", i)
 			// 广播唤醒所有的等待者, 当前只有一个等待者(裁判员)
-			c.Broadcast()
+			// c.Broadcast()
+			c.Signal() //单个
 		}(i)
 	}
 
 	c.L.Lock()
+	i := 1
 	for ready != 10 {
-		c.Wait()
-		log.Println("裁判员被唤醒一次")
+		c.Wait() // 调用 Wait 方法时必须要持有 c.L 的锁, Wait 方法，会把调用者 Caller 放入 Cond 的等待队列中并阻塞，直到被 Signal 或者 Broadcast 的方法从等待队列中移除并唤醒
+		log.Printf("裁判员被唤醒%d次", i)
+		i++
 	}
 	c.L.Unlock()
 

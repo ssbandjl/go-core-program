@@ -56,7 +56,9 @@ func login(userId int, userPwd string) (err error) {
 	var pkgLen uint32                            //无符号32字节满足4GB数据
 	pkgLen = uint32(len(data))                   //将int强转为unit32
 	var buf [4]byte                              //字节数组
-	binary.BigEndian.PutUint32(buf[0:4], pkgLen) //长度转成字节切片，大端字节序
+	binary.BigEndian.PutUint32(buf[0:4], pkgLen) //长度转成字节切片，大端字节序, 理解字节序:https://www.ruanyifeng.com/blog/2016/11/byte-order.html
+	// 答案是，计算机电路先处理低位字节，效率比较高，因为计算都是从低位开始的。所以，计算机的内部处理都是小端字节序。
+	// 但是，人类还是习惯读写大端字节序。所以，除了计算机的内部处理，其他的场合几乎都是大端字节序，比如网络传输和文件储存。
 	// 发送长度
 	n, err := conn.Write(buf[:4]) //net的连接conn接口中的Write方法，参数为字节切片[]byte
 	if n != 4 || err != nil {
