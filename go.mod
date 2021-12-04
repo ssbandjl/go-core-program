@@ -34,6 +34,7 @@ require (
 	github.com/lib/pq v1.9.0
 	github.com/minio/minio-go v6.0.14+incompatible
 	github.com/petermattis/goid v0.0.0-20180202154549-b0b1615b78e5
+	github.com/prometheus/client_golang v1.11.0 // indirect
 	github.com/shirou/gopsutil v3.21.9+incompatible
 	github.com/smartystreets/goconvey v1.6.4
 	github.com/tklauser/go-sysconf v0.3.9 // indirect
@@ -41,7 +42,7 @@ require (
 	github.com/xdg/stringprep v1.0.0 // indirect
 	go.mongodb.org/mongo-driver v1.4.2
 	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a
-	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
+	golang.org/x/sync v0.0.0-20201207232520-09787c993a3a
 	golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e // indirect
 	golang.org/x/tools v0.1.0 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
