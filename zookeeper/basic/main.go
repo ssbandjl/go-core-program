@@ -84,5 +84,6 @@ func test3() {
 }
 
 func main() {
-	test3()
+	test1()
+	// test3()
 }

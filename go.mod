@@ -23,7 +23,6 @@ require (
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/goccy/go-graphviz v0.0.8 // indirect
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
-	github.com/golang/protobuf v1.4.3 // indirect
 	github.com/golang/snappy v0.0.2 // indirect
 	github.com/gorilla/websocket v1.4.2
 	github.com/h2non/filetype v1.1.1 // indirect
@@ -54,7 +53,6 @@ require (
 	gorm.io/driver/mysql v1.0.1
 	gorm.io/driver/sqlite v1.1.3
 	gorm.io/gorm v1.20.2
-	k8s.io/api v0.19.0 // indirect
 	k8s.io/apiextensions-apiserver v0.19.0 // indirect
 	k8s.io/client-go v11.0.0+incompatible // indirect
 	k8s.io/klog v1.0.0 // indirect
