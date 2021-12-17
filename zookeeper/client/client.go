@@ -11,6 +11,10 @@ import (
 	"github.com/samuel/go-zookeeper/zk"
 )
 
+const (
+	zkAddr = "localhost:2181"
+)
+
 func checkError(err error) {
 	if err != nil {
 		fmt.Println(err)
@@ -75,7 +79,7 @@ func getServerHost() (host string, err error) {
 	return
 }
 func GetConnect() (conn *zk.Conn, err error) {
-	zkList := []string{"localhost:2181"}
+	zkList := []string{zkAddr}
 	conn, _, err = zk.Connect(zkList, 10*time.Second)
 	if err != nil {
 		fmt.Println(err)

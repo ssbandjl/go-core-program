@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	zkAddr = "192.168.7.240:2182"
+	zkAddr = "localhost:2181"
 )
 
 func main() {
