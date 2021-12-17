@@ -3,6 +3,7 @@ module go_code
 go 1.14
 
 require (
+	github.com/Azure/go-amqp v0.16.4 // indirect
 	github.com/allegro/bigcache v1.2.1
 	github.com/aws/aws-sdk-go v1.35.6
 	github.com/bitly/go-simplejson v0.5.0
@@ -34,7 +35,9 @@ require (
 	github.com/lib/pq v1.9.0
 	github.com/minio/minio-go v6.0.14+incompatible
 	github.com/petermattis/goid v0.0.0-20180202154549-b0b1615b78e5
-	github.com/prometheus/client_golang v1.11.0 // indirect
+	github.com/prometheus/client_golang v1.11.0
+	github.com/prometheus/common v0.26.0
+	github.com/samuel/go-zookeeper v0.0.0-20201211165307-7117e9ea2414 // indirect
 	github.com/shirou/gopsutil v3.21.9+incompatible
 	github.com/smartystreets/goconvey v1.6.4
 	github.com/tklauser/go-sysconf v0.3.9 // indirect
