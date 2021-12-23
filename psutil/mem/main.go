@@ -18,6 +18,7 @@ func getMetric() {
 	log.Printf("Buffers:%v", memory.Buffers)
 	log.Printf("Cached:%v", memory.Cached)
 	log.Printf("Total:%v", memory.Total)
+	log.Printf("Slab:%v", memory.Slab)
 }
 func main() {
 	getMetric()
