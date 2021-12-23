@@ -19,6 +19,9 @@ func getMetric() {
 	log.Printf("Cached:%v", memory.Cached)
 	log.Printf("Total:%v", memory.Total)
 	log.Printf("Slab:%v", memory.Slab)
+	// used=MemTotal-(MemFree+Buffers+Cached+Slab) ，把MemFree+Buffers+Cached做为available的数据
+	log.Printf("used:%v", memory.Total-(memory.Free+memory.Buffers+memory.Cached+memory.Slab))
+	log.Printf("available:%v", memory.Free+memory.Cached+memory.Buffers)
 }
 func main() {
 	getMetric()
