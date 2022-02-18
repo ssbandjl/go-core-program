@@ -8,6 +8,7 @@ require (
 	github.com/aws/aws-sdk-go v1.35.6
 	github.com/bitly/go-simplejson v0.5.0
 	github.com/codeclysm/extract v2.2.0+incompatible // indirect
+	github.com/codeskyblue/go-sh v0.0.0-20200712050446-30169cf553fe // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/garyburd/redigo v1.6.2
 	github.com/ghodss/yaml v1.0.0
@@ -32,7 +33,9 @@ require (
 	github.com/jinzhu/gorm v1.9.16
 	github.com/juju/errors v0.0.0-20200330140219-3fe23663418f // indirect
 	github.com/lib/pq v1.9.0
+	github.com/markbates/grift v1.5.0 // indirect
 	github.com/minio/minio-go v6.0.14+incompatible
+	github.com/pelletier/go-toml v1.9.4 // indirect
 	github.com/petermattis/goid v0.0.0-20180202154549-b0b1615b78e5
 	github.com/prometheus/client_golang v1.11.0
 	github.com/prometheus/common v0.26.0
