@@ -10,6 +10,7 @@ require (
 	github.com/codeclysm/extract v2.2.0+incompatible // indirect
 	github.com/codeskyblue/go-sh v0.0.0-20200712050446-30169cf553fe // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/forgoer/openssl v1.2.0 // indirect
 	github.com/garyburd/redigo v1.6.2
 	github.com/ghodss/yaml v1.0.0
 	github.com/gin-contrib/cors v1.3.1 // indirect
@@ -20,6 +21,7 @@ require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-errors/errors v1.1.1 // indirect
 	github.com/go-ini/ini v1.61.0 // indirect
+	github.com/go-ping/ping v0.0.0-20211130115550-779d1e919534 // indirect
 	github.com/go-redis/redis/v8 v8.4.0
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/goccy/go-graphviz v0.0.8 // indirect
@@ -47,7 +49,7 @@ require (
 	github.com/xdg/stringprep v1.0.0 // indirect
 	go.mongodb.org/mongo-driver v1.4.2
 	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a
-	golang.org/x/sync v0.0.0-20201207232520-09787c993a3a
+	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e // indirect
 	golang.org/x/tools v0.1.0 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
