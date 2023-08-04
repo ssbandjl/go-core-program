@@ -17,6 +17,7 @@
     * [测试参数Testing flags](https://golang.org/cmd/go/#hdr-Testing_flags)
   
 - [并发编程实战课](./concurrent)
+- ![](./go并发编程实战课结课证书_songxiaobing.png)
 
   - [Channel](./concurrent/channel)
 
