@@ -70,8 +70,18 @@
   | chapter16 | goroutine/判断大数是否是素数/进程和线程(相比协程还是偏重)/并发(多线程单核,微观是时间分片,与Web并发概念有区别)和并行(多线程多核)/协程(轻量级线程,独立栈,共享堆,用户调度,轻松开启上万个协程)和主线程(重量级物理线程，直接作用在CPU,其他语言并发是基于线程的，线程过多(几千个)耗费资源)/channel/MPG模式(M:主线程,P:协程上下文,G:协程,协程可形成队列)/MPG运行状态/设置CPU核数/协程间通信,资源竞争等/go build -race查看资源竞争关系/互斥锁sync.Mutex/Lock/Unlock/ |
   | chapter17 |反射reflect/TypeOf/ValueOf/常量/iota赋零值/修改值rVal.Elem().SetInt(20)/获取标签tagVal := typ.Field(i).Tag.Get("json")/bridge适配器(通过反射自适应参数个数)|
   | chapter18 |TCP编程/Redis/init()初始化连接池      |
-  | chapter20 | 数据结构/栈/稀疏数组sparseArray/队列/数组实现非环形队列singleQueue/常见排序       |
+  | chapter20 | 数据结构/栈/稀疏数组sparseArray/队列/数组实现非环形队列singleQueue/常见排序/二分查找/二叉树/快速排序/插入排序/链表       |
   
+
+分布式队列和分布式优先队列: /Users/xb/gitlab/go/go_core_program/concurrent/distributed-main
+延迟进行初始化once, 单例模式, 线程安全的map, 分片索引, 把锁的粒度限制在分片上, sync.map, store, load, delete, 
+SingleFlight(单程,合并请求,防止缓存击穿) 和 CyclicBarrier：请求合并和循环栅栏, SingleFlight 的作用是将并发请求合并成一个请求，以减少对下层服务的压力, 而 CyclicBarrier 是一个可重用的栅栏并发原语，用来控制一组请求同时执行的数据结构
+
+
+
+
+
+
 - 目录2
 
   | 视频文件                                                     | 代码位置        | 说明 |

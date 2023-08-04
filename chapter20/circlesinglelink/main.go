@@ -1,11 +1,11 @@
-package main
+package main // 环形单向链表
 import (
 	"fmt"
 )
 
 //定义猫的结构体结点
 type CatNode struct {
-	no int //猫猫的编号
+	no   int //猫猫的编号
 	name string
 	next *CatNode
 }
@@ -18,9 +18,9 @@ func InsertCatNode(head *CatNode, newCatNode *CatNode) {
 		head.name = newCatNode.name
 		head.next = head //构成一个环形，head也有自己的空间
 		fmt.Println(newCatNode, "加入到环形的链表")
-		return 
+		return
 	}
-	
+
 	//定义一个临时变量，帮忙,找到环形的最后结点
 	temp := head
 	for {
@@ -41,8 +41,8 @@ func ListCircleLink(head *CatNode) {
 	temp := head
 	if temp.next == nil {
 		fmt.Println("空空如也的环形链表...")
-		return 
-	} 
+		return
+	}
 	for {
 		fmt.Printf("猫的信息为=[id=%d name=%s] ->\n", temp.no, temp.name)
 		if temp.next == head {
@@ -62,11 +62,11 @@ func DelCatNode(head *CatNode, id int) *CatNode {
 		fmt.Println("这是一个空的环形链表，不能删除")
 		return head
 	}
-	
+
 	//如果只有一个结点
 	if temp.next == head { //只有一个结点
 		if temp.no == id {
-			temp.next = nil 
+			temp.next = nil
 		}
 		return head
 	}
@@ -75,7 +75,7 @@ func DelCatNode(head *CatNode, id int) *CatNode {
 	for {
 		if helper.next == head {
 			break
-		} 
+		}
 		helper = helper.next
 	}
 
@@ -83,8 +83,8 @@ func DelCatNode(head *CatNode, id int) *CatNode {
 	flag := true //删除后置为false
 	for {
 		if temp.next == head { //如果到这来，说明我比较到最后一个【最后一个还没比较】
-			break 
-		} 
+			break
+		}
 		if temp.no == id {
 			if temp == head { //说明删除的是头结点，初始情况就是temp := head
 				head = head.next
@@ -97,7 +97,7 @@ func DelCatNode(head *CatNode, id int) *CatNode {
 			flag = false
 			break
 		}
-		temp = temp.next //移动 【比较】
+		temp = temp.next     //移动 【比较】
 		helper = helper.next //跟随移动 【一旦找到要删除的结点 利用helper删除节点】
 	}
 	//这里还有比较一次
@@ -105,11 +105,11 @@ func DelCatNode(head *CatNode, id int) *CatNode {
 		if temp.no == id {
 			helper.next = temp.next
 			fmt.Printf("删除猫猫=%d\n", id)
-		}else {
+		} else {
 			fmt.Printf("对不起，没有no=%d\n", id)
 		}
-	} 
-	return head   //返回新的头结点
+	}
+	return head //返回新的头结点
 }
 
 func main() {
@@ -119,27 +119,27 @@ func main() {
 
 	//创建一只猫
 	cat1 := &CatNode{
-		no : 1,
-		name : "tom",
+		no:   1,
+		name: "tom",
 	}
 	cat2 := &CatNode{
-		no : 2,
-		name : "tom2",
+		no:   2,
+		name: "tom2",
 	}
 	cat3 := &CatNode{
-		no : 3,
-		name : "tom3",
+		no:   3,
+		name: "tom3",
 	}
 	InsertCatNode(head, cat1)
 	InsertCatNode(head, cat2)
 	InsertCatNode(head, cat3)
 	ListCircleLink(head)
 
-	head = DelCatNode(head, 30)  //删除不存在的猫猫
+	head = DelCatNode(head, 30) //删除不存在的猫猫
 
-	fmt.Println()	
-	fmt.Println()	
-	fmt.Println()	
+	fmt.Println()
+	fmt.Println()
+	fmt.Println()
 	ListCircleLink(head)
 
 }

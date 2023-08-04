@@ -1,0 +1,150 @@
+
+   type Mutex struct {
+        state int32
+        sema  uint32
+    }
+    
+    const (
+        mutexLocked = 1 << iota // mutex is locked
+        mutexWoken
+        mutexStarving // 从state字段中分出一个饥饿标记
+        mutexWaiterShift = iota
+    
+        starvationThresholdNs = 1e6
+    )
+    
+    func (m *Mutex) Lock() {
+        // Fast path: 幸运之路，一下就获取到了锁
+        if atomic.CompareAndSwapInt32(&m.state, 0, mutexLocked) {
+            return
+        }
+        // Slow path：缓慢之路，尝试自旋竞争或饥饿状态下饥饿goroutine竞争
+        m.lockSlow()
+    }
+    
+    func (m *Mutex) lockSlow() {
+        var waitStartTime int64
+        starving := false // 此goroutine的饥饿标记
+        awoke := false // 唤醒标记
+        iter := 0 // 自旋次数
+        old := m.state // 当前的锁的状态
+        for {
+            // 锁是非饥饿状态，锁还没被释放，尝试自旋
+            if old&(mutexLocked|mutexStarving) == mutexLocked && runtime_canSpin(iter) {
+                if !awoke && old&mutexWoken == 0 && old>>mutexWaiterShift != 0 &&
+                    atomic.CompareAndSwapInt32(&m.state, old, old|mutexWoken) {
+                    awoke = true
+                }
+                runtime_doSpin()
+                iter++
+                old = m.state // 再次获取锁的状态，之后会检查是否锁被释放了
+                continue
+            }
+            new := old
+            if old&mutexStarving == 0 {
+                new |= mutexLocked // 非饥饿状态，加锁
+            }
+            if old&(mutexLocked|mutexStarving) != 0 {
+                new += 1 << mutexWaiterShift // waiter数量加1
+            }
+            if starving && old&mutexLocked != 0 {
+                new |= mutexStarving // 设置饥饿状态
+            }
+            if awoke {
+                if new&mutexWoken == 0 {
+                    throw("sync: inconsistent mutex state")
+                }
+                new &^= mutexWoken // 新状态清除唤醒标记
+            }
+            // 成功设置新状态
+            if atomic.CompareAndSwapInt32(&m.state, old, new) {
+                // 原来锁的状态已释放，并且不是饥饿状态，正常请求到了锁，返回
+                if old&(mutexLocked|mutexStarving) == 0 {
+                    break // locked the mutex with CAS
+                }
+                // 处理饥饿状态
+
+                // 如果以前就在队列里面，加入到队列头
+                queueLifo := waitStartTime != 0
+                if waitStartTime == 0 {
+                    waitStartTime = runtime_nanotime()
+                }
+                // 阻塞等待
+                runtime_SemacquireMutex(&m.sema, queueLifo, 1)
+                // 唤醒之后检查锁是否应该处于饥饿状态
+                starving = starving || runtime_nanotime()-waitStartTime > starvationThresholdNs
+                old = m.state
+                // 如果锁已经处于饥饿状态，直接抢到锁，返回
+                if old&mutexStarving != 0 {
+                    if old&(mutexLocked|mutexWoken) != 0 || old>>mutexWaiterShift == 0 {
+                        throw("sync: inconsistent mutex state")
+                    }
+                    // 有点绕，加锁并且将waiter数减1
+                    delta := int32(mutexLocked - 1<<mutexWaiterShift)
+                    if !starving || old>>mutexWaiterShift == 1 {
+                        delta -= mutexStarving // 最后一个waiter或者已经不饥饿了，清除饥饿标记
+                    }
+                    atomic.AddInt32(&m.state, delta)
+                    break
+                }
+                awoke = true
+                iter = 0
+            } else {
+                old = m.state
+            }
+        }
+    }
+    
+    func (m *Mutex) Unlock() {
+        // Fast path: drop lock bit.
+        new := atomic.AddInt32(&m.state, -mutexLocked)
+        if new != 0 {
+            m.unlockSlow(new)
+        }
+    }
+    
+    func (m *Mutex) unlockSlow(new int32) {
+        if (new+mutexLocked)&mutexLocked == 0 {
+            throw("sync: unlock of unlocked mutex")
+        }
+        if new&mutexStarving == 0 {
+            old := new
+            for {
+                if old>>mutexWaiterShift == 0 || old&(mutexLocked|mutexWoken|mutexStarving) != 0 {
+                    return
+                }
+                new = (old - 1<<mutexWaiterShift) | mutexWoken
+                if atomic.CompareAndSwapInt32(&m.state, old, new) {
+                    runtime_Semrelease(&m.sema, false, 1)
+                    return
+                }
+                old = m.state
+            }
+        } else {
+            runtime_Semrelease(&m.sema, true, 1)
+        }
+    }
+
+
+
+		跟之前的实现相比，当前的 Mutex 最重要的变化，就是增加饥饿模式。第 12 行将饥饿模式的最大等待时间阈值设置成了 1 毫秒，这就意味着，一旦等待者等待的时间超过了这个阈值，Mutex 的处理就有可能进入饥饿模式，优先让等待者先获取到锁，新来的同学主动谦让一下，给老同志一些机会。通过加入饥饿模式，可以避免把机会全都留给新来的 goroutine，保证了请求锁的 goroutine 获取锁的公平性，对于我们使用锁的业务代码来说，不会有业务一直等待锁不被处理。那么，接下来的部分就是选学内容了。如果你还有精力，并且对饥饿模式很感兴趣，那就跟着我一起继续来挑战吧。如果你现在理解起来觉得有困难，也没关系，后面可以随时回来复习。饥饿模式和正常模式Mutex 可能处于两种操作模式下：正常模式和饥饿模式。接下来我们分析一下 Mutex 对饥饿模式和正常模式的处理。请求锁时调用的 Lock 方法中一开始是 fast path，这是一个幸运的场景，当前的 goroutine 幸运地获得了锁，没有竞争，直接返回，否则就进入了 lockSlow 方法。这样的设计，方便编译器对 Lock 方法进行内联，你也可以在程序开发中应用这个技巧。正常模式下，waiter 都是进入先入先出队列，被唤醒的 waiter 并不会直接持有锁，而是要和新来的 goroutine 进行竞争。新来的 goroutine 有先天的优势，它们正在 CPU 中运行，可能它们的数量还不少，所以，在高并发情况下，被唤醒的 waiter 可能比较悲剧地获取不到锁，这时，它会被插入到队列的前面。如果 waiter 获取不到锁的时间超过阈值 1 毫秒，那么，这个 Mutex 就进入到了饥饿模式。在饥饿模式下，Mutex 的拥有者将直接把锁交给队列最前面的 waiter。新来的 goroutine 不会尝试获取锁，即使看起来锁没有被持有，它也不会去抢，也不会 spin，它会乖乖地加入到等待队列的尾部。如果拥有 Mutex 的 waiter 发现下面两种情况的其中之一，它就会把这个 Mutex 转换成正常模式:此 waiter 已经是队列中的最后一个 waiter 了，没有其它的等待锁的 goroutine 了；此 waiter 的等待时间小于 1 毫秒。正常模式拥有更好的性能，因为即使有等待抢锁的 waiter，goroutin
+
+		接下来，我们逐步分析下 Mutex 代码的关键行，彻底搞清楚饥饿模式的细节。我们从请求锁（lockSlow）的逻辑看起。第 9 行对 state 字段又分出了一位，用来标记锁是否处于饥饿状态。现在一个 state 的字段被划分成了阻塞等待的 waiter 数量、饥饿标记、唤醒标记和持有锁的标记四个部分。第 25 行记录此 goroutine 请求锁的初始时间，第 26 行标记是否处于饥饿状态，第 27 行标记是否是唤醒的，第 28 行记录 spin 的次数。第 31 行到第 40 行和以前的逻辑类似，只不过加了一个不能是饥饿状态的逻辑。它会对正常状态抢夺锁的 goroutine 尝试 spin，和以前的目的一样，就是在临界区耗时很短的情况下提高性能。第 42 行到第 44 行，非饥饿状态下抢锁。怎么抢？就是要把 state 的锁的那一位，置为加锁状态，后续 CAS 如果成功就可能获取到了锁。第 46 行到第 48 行，如果锁已经被持有或者锁处于饥饿状态，我们最好的归宿就是等待，所以 waiter 的数量加 1。第 49 行到第 51 行，如果此 goroutine 已经处在饥饿状态，并且锁还被持有，那么，我们需要把此 Mutex 设置为饥饿状态。第 52 行到第 57 行，是清除 mutexWoken 标记，因为不管是获得了锁还是进入休眠，我们都需要清除 mutexWoken 标记。第 59 行就是尝试使用 CAS 设置 state。如果成功，第 61 行到第 63 行是检查原来的锁的状态是未加锁状态，并且也不是饥饿状态的话就成功获取了锁，返回。第 67 行判断是否第一次加入到 waiter 队列。到这里，你应该就能明白第 25 行为什么不对 waitStartTime 进行初始化了，我们需要利用它在这里进行条件判断。第 72 行将此 waiter 加入到队列，如果是首次，加入到队尾，先进先出。如果不是首次，那么加入到队首，这样等待最久的 goroutine 优先能够获取到锁。此 goroutine 会进行休眠。第 74 行判断此 goroutine 是否处于饥饿状态。注意，执行这一句的时候，它已经被唤醒了。第 77 行到第 88 行是对锁处于饥饿状态下的一些处理。第 82 行设置一个标志，这个标志稍后会用来加锁，而且还会将 waiter 数减 1。第 84 行，设
+
+
+
+		老师讲得太棒了，我自己看Mutex源码时，没有前因后果，知识不成体系。交个作业：
+
+1. 目前 Mutex 的 state 字段有几个意义，这几个意义分别是由哪些字段表示的？
+和第四个阶段的讲解基本一致：前三个bit分别为mutexLocked、mutexWoken、mutexStarving，剩余bit表示mutexWaiter
+
+2. 等待一个 Mutex 的 goroutine 数最大是多少？是否能满足现实的需求？
+单从程序来看，可以支持 1<<(32-3) -1 ，约 0.5 Billion个
+    其中32为state的类型int32，3位waiter字段的shift
+考虑到实际goroutine初始化的空间为2K，0.5Billin*2K达到了1TB，单从内存空间来说已经要求极高了，当前的设计肯定可以满足了。
+
+
+作者回复: Mutex和channel实现代码实现非常复杂，第一遍看不懂没关系，第二遍看不懂也没关系......,永远看不懂也不影响你使用它。你可以每次只尝试理解一个知识点。我的经验是多看几遍，每一个if分支都理解它的意思，在纸上画一画state的值的变化
+
+
+

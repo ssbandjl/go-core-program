@@ -1,18 +1,18 @@
 package main
+
 import (
-	"fmt"
 	"encoding/json"
+	"fmt"
 )
 
 //定义一个结构体
 type Monster struct {
-	Name string  
-	Age int 
+	Name     string
+	Age      int
 	Birthday string //....
-	Sal float64
-	Skill string
+	Sal      float64
+	Skill    string
 }
-
 
 //演示将json字符串，反序列化成struct
 func unmarshalStruct() {
@@ -29,6 +29,7 @@ func unmarshalStruct() {
 	fmt.Printf("反序列化后 monster=%v monster.Name=%v \n", monster, monster.Name)
 
 }
+
 //将map进行序列化
 func testMap() string {
 	//定义一个map
@@ -56,7 +57,7 @@ func unmarshalMap() {
 	//str := "{\"address\":\"洪崖洞\",\"age\":30,\"name\":\"红孩儿\"}"
 	str := testMap()
 	//定义一个map
-	var a map[string]interface{} 
+	var a map[string]interface{}
 
 	//反序列化
 	//注意：反序列化map,不需要make,因为make操作被封装到 Unmarshal函数
@@ -70,9 +71,9 @@ func unmarshalMap() {
 
 //演示将json字符串，反序列化成切片
 func unmarshalSlice() {
-	str := "[{\"address\":\"北京\",\"age\":\"7\",\"name\":\"jack\"}," + 
+	str := "[{\"address\":\"北京\",\"age\":\"7\",\"name\":\"jack\"}," +
 		"{\"address\":[\"墨西哥\",\"夏威夷\"],\"age\":\"20\",\"name\":\"tom\"}]"
-	
+
 	//定义一个slice
 	var slice []map[string]interface{}
 	//反序列化，不需要make,因为make操作被封装到 Unmarshal函数

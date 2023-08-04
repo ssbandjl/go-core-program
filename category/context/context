@@ -1,0 +1,86 @@
+
+
+超时（Timeout）和取消（Cancel）的机制
+
+
+Context 最主要的功能是取消 goroutine 的执行
+
+上下文信息传递 （request-scoped），比如处理 http 请求、在请求处理链路上传递信息；
+控制子 goroutine 的运行；
+超时控制的方法调用；
+可以取消的方法调用。
+
+
+type Context interface {
+    Deadline() (deadline time.Time, ok bool)
+    Done() <-chan struct{}
+    Err() error
+    Value(key interface{}) interface{}
+}
+
+
+
+var Canceled = errors.New("context canceled")
+
+
+
+func WithDeadline(parent Context, d time.Time) (Context, CancelFunc) {
+    // 如果parent的截止时间更早，直接返回一个cancelCtx即可
+    if cur, ok := parent.Deadline(); ok && cur.Before(d) {
+        return WithCancel(parent)
+    }
+    c := &timerCtx{
+        cancelCtx: newCancelCtx(parent),
+        deadline:  d,
+    }
+    propagateCancel(parent, c) // 同cancelCtx的处理逻辑
+    dur := time.Until(d)
+    if dur <= 0 { //当前时间已经超过了截止时间，直接cancel
+        c.cancel(true, DeadlineExceeded)
+        return c, func() { c.cancel(false, Canceled) }
+    }
+    c.mu.Lock()
+    defer c.mu.Unlock()
+    if c.err == nil {
+        // 设置一个定时器，到截止时间后取消
+        c.timer = time.AfterFunc(dur, func() {
+            c.cancel(true, DeadlineExceeded)
+        })
+    }
+    return c, func() { c.cancel(true, Canceled) }
+}
+
+
+
+func slowOperationWithTimeout(ctx context.Context) (Result, error) {
+  ctx, cancel := context.WithTimeout(ctx, 100*time.Millisecond)
+  defer cancel() // 一旦慢操作完成就立马调用cancel
+  return slowOperation(ctx)
+}
+
+
+
+func main() {
+    ctx, cancel := context.WithCancel(context.Background())
+
+    go func() {
+        defer func() {
+            fmt.Println("goroutine exit")
+        }()
+
+        for {
+            select {
+            case <-ctx.Done():
+                return
+            default:
+                time.Sleep(time.Second)
+            }
+        }
+    }()
+
+    time.Sleep(time.Second)
+    cancel()
+    time.Sleep(2 * time.Second)
+}
+
+所以，有时候，Context 并不会减少对服务器的请求负担。如果在 Context 被 cancel 的时候，你能关闭和服务器的连接，中断和数据库服务器的通讯、停止对本地文件的读写，那么，这样的超时处理，同时能减少对服务调用的压力，但是这依赖于你对超时的底层处理机制。

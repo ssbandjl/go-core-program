@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
+	// reg := []string{"a", "b", "c"}
 	reg := []string{"a", "b", "c"}
-	fmt.Println(strings.Join(reg, ","))
+	fmt.Println(strings.Join(reg, "|"))
 }

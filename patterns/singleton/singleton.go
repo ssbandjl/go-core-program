@@ -118,4 +118,5 @@ func main() {
 	GetInstance("b").GetName()
 	GetInstance("c").GetName()
 	GetInstance("d").GetName()
+
 }

@@ -1,0 +1,170 @@
+[atomic]
+
+如果一个操作是由一个 CPU 指令来实现的，那么它就是原子操作，比如它的 XCHG 和 INC 等指令。如果操作是基于多条指令来实现的，那么，执行的过程中可能会被中断，并执行上下文切换
+
+
+Go 提供了一个通用的原子操作的 API，将更底层的不同的架构下的实现封装成 atomic 包，提供了修改类型的原子操作（atomic read-modify-write，RMW）和加载存储类型的原子操作（Load 和 Store）的 API
+
+
+
+const x int64 = 1 + 1<<33
+
+func main() {
+    var i = x
+    _ = i
+}
+
+
+GOARCH=386 go tool compile -N -l test.go；
+GOARCH=386 go tool objdump -gnu test.o 反编译
+
+
+
+
+atomic 原子操作还是实现 lock-free 数据结构的基石
+
+
+lock-free
+Xbox 360 和 Microsof Windows 的无锁编程注意事项
+https://docs.microsoft.com/zh-cn/windows/win32/dxtecharts/lockless-programming
+
+减去一个值
+利用计算机补码的规则，把减法变成加法。以 uint32 类型为例：
+AddUint32(&x, ^uint32(c-1)).
+
+-1
+AddUint32(&x, ^uint32(0))
+
+
+
+type Config struct {
+    NodeName string
+    Addr     string
+    Count    int32
+}
+
+func loadNewConfig() Config {
+    return Config{
+        NodeName: "北京",
+        Addr:     "10.77.95.27",
+        Count:    rand.Int31(),
+    }
+}
+func main() {
+    var config atomic.Value
+    config.Store(loadNewConfig())
+    var cond = sync.NewCond(&sync.Mutex{})
+
+    // 设置新的config
+    go func() {
+        for {
+            time.Sleep(time.Duration(5+rand.Int63n(5)) * time.Second)
+            config.Store(loadNewConfig())
+            cond.Broadcast() // 通知等待着配置已变更
+        }
+    }()
+
+    go func() {
+        for {
+            cond.L.Lock()
+            cond.Wait()                 // 等待变更信号
+            c := config.Load().(Config) // 读取新的配置
+            fmt.Printf("new config: %+v\n", c)
+            cond.L.Unlock()
+        }
+    }()
+
+    select {}
+}
+
+
+函数调用有一点点麻烦。所以，有些人就对这些函数做了进一步的包装，跟 atomic 中的 Value 类型类似，这些类型也提供了面向对象的使用方式，比如关注度比较高的uber-go/atomic
+https://github.com/uber-go/atomic
+
+
+
+使用 atomic 实现 Lock-Free queue
+
+package queue
+import (
+  "sync/atomic"
+  "unsafe"
+)
+// lock-free的queue
+type LKQueue struct {
+  head unsafe.Pointer
+  tail unsafe.Pointer
+}
+// 通过链表实现，这个数据结构代表链表中的节点
+type node struct {
+  value interface{}
+  next  unsafe.Pointer
+}
+func NewLKQueue() *LKQueue {
+  n := unsafe.Pointer(&node{})
+  return &LKQueue{head: n, tail: n}
+}
+// 入队
+func (q *LKQueue) Enqueue(v interface{}) {
+  n := &node{value: v}
+  for {
+    tail := load(&q.tail)
+    next := load(&tail.next)
+    if tail == load(&q.tail) { // 尾还是尾
+      if next == nil { // 还没有新数据入队
+        if cas(&tail.next, next, n) { //增加到队尾
+          cas(&q.tail, tail, n) //入队成功，移动尾巴指针
+          return
+        }
+      } else { // 已有新数据加到队列后面，需要移动尾指针
+        cas(&q.tail, tail, next)
+      }
+    }
+  }
+}
+// 出队，没有元素则返回nil
+func (q *LKQueue) Dequeue() interface{} {
+  for {
+    head := load(&q.head)
+    tail := load(&q.tail)
+    next := load(&head.next)
+    if head == load(&q.head) { // head还是那个head
+      if head == tail { // head和tail一样
+        if next == nil { // 说明是空队列
+          return nil
+        }
+        // 只是尾指针还没有调整，尝试调整它指向下一个
+        cas(&q.tail, tail, next)
+      } else {
+        // 读取出队的数据
+        v := next.value
+                // 既然要出队了，头指针移动到下一个
+        if cas(&q.head, head, next) {
+          return v // Dequeue is done.  return
+        }
+      }
+    }
+  }
+}
+
+// 将unsafe.Pointer原子加载转换成node
+func load(p *unsafe.Pointer) (n *node) {
+  return (*node)(atomic.LoadPointer(p))
+}
+
+// 封装CAS,避免直接将*node转换成unsafe.Pointer
+func cas(p *unsafe.Pointer, old, new *node) (ok bool) {
+  return atomic.CompareAndSwapPointer(
+    p, unsafe.Pointer(old), unsafe.Pointer(new))
+}
+
+这个 lock-free 的实现使用了一个辅助头指针（head），头指针不包含有意义的数据，只是一个辅助的节点，这样的话，出队入队中的节点会更简单。入队的时候，通过 CAS 操作将一个元素添加到队尾，并且移动尾指针。出队的时候移除一个节点，并通过 CAS 操作移动 head 指针，同时在必要的时候移动尾指针。
+
+撕裂写（torn write)
+
+内存屏障（memory fence 或 memory barrier）的方式。一个写内存屏障会告诉处理器，必须要等到它管道中的未完成的操作（特别是写操作）都被刷新到内存中，再进行操作。此操作还会让相关的处理器的 CPU 缓存失效，以便让它们从主存中拉取最新的值
+
+现代的CPU基本上都在硬件层面保证了多核之间数据视图的一致性，也就是说普通的LOAD/STORE命令在硬件层面处理器就可以保证cache的一致性。如果是这样的话，那是不是可以理解为atomic包对指针的作用，主要是防止编译器做指令重排呢？因为编译器在这些现代架构上没必要使用特殊的指令了
+
+
+

@@ -15,7 +15,7 @@ type T struct {
 type MyChannel struct {
 	C      chan T
 	closed bool
-	mutex  sync.Mutex
+  sync.Mutex
 }
 
 func NewMyChannel() *MyChannel {

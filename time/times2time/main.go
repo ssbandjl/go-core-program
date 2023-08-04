@@ -10,9 +10,9 @@ func main() {
 	var ts int64
 	ts = 1605228323
 	tm := time.Unix(ts, 0)
-	fmt.Println(tm.Format("2006-01-02"))
+	fmt.Println("时间戳转日期:", tm.Format("2006-01-02"))
 	date, _ := time.Parse("2006-01-02", tm.Format("2006-01-02"))
-	fmt.Println("date", date)
+	fmt.Println("时间戳转时间:date", date)
 
 	timeStr := "210102 13:14:15"
 	log.Printf("时间格式化:%s", tm.Format("200102 15:04:05"))

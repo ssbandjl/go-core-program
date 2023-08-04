@@ -1,0 +1,119 @@
+10 | Pool：性能提升大杀器
+
+
+对象池
+
+不过，这个类型也有一些使用起来不太方便的地方，就是它池化的对象可能会被垃圾回收掉，这对于数据库长连接等场景是不合适的。所以在这一讲中，我会专门介绍其它的一些 Pool，包括 TCP 连接池、数据库连接池等等。除此之外，我还会专门介绍一个池的应用场景： Worker Pool，或者叫做 goroutine pool，这也是常用的一种并发模式，可以使用有限的 goroutine 资源去处理大量的业务数据
+
+
+动态大小的 buffer 池做输出缓存
+
+
+buffer 池（缓冲池)
+
+
+
+var buffers = sync.Pool{
+  New: func() interface{} { 
+    return new(bytes.Buffer)
+  },
+}
+
+func GetBuffer() *bytes.Buffer {
+  return buffers.Get().(*bytes.Buffer)
+}
+
+func PutBuffer(buf *bytes.Buffer) {
+  buf.Reset()
+  buffers.Put(buf)
+}
+
+
+在 Go 1.13 中，sync.Pool 做了大量的优化。前几讲中我提到过，提高并发程序性能的优化点是尽量不要使用锁，如果不得已使用了锁，就把锁 Go 的粒度降到最低。Go 对 Pool 的优化就是避免使用锁，同时将加锁的 queue 改成 lock-free 的 queue 的实现，给即将移除的元素再多一次“复活”的机会
+
+
+victim: 受害者
+
+
+local-free 的 queue 列表
+
+pin 代码的实现，你只需要知道，pin 方法会将此 goroutine 固定在当前的 P 上，避免查找元素期间被其它的 P 执行
+
+
+http.Client 实现连接池的代码是在 Transport 类型中，它使用 idleConn 保存持久化的可重用的长连接
+
+
+
+// 工厂模式，提供创建连接的工厂方法
+factory    := func() (net.Conn, error) { return net.Dial("tcp", "127.0.0.1:4000") }
+
+// 创建一个tcp池，提供初始容量和最大容量以及工厂方法
+p, err := pool.NewChannelPool(5, 30, factory)
+
+// 获取一个连接
+conn, err := p.Get()
+
+// Close并不会真正关闭这个连接，而是把它放回池子，所以你不必显式地Put这个对象到池子中
+conn.Close()
+
+// 通过调用MarkUnusable, Close的时候就会真正关闭底层的tcp的连接了
+if pc, ok := conn.(*pool.PoolConn); ok {
+  pc.MarkUnusable()
+  pc.Close()
+}
+
+// 关闭池子就会关闭=池子中的所有的tcp连接
+p.Close()
+
+// 当前池子中的连接的数量
+current := p.Len()
+
+
+
+
+   // 放回一个待重用的连接
+   func (c *Client) putFreeConn(addr net.Addr, cn *conn) {
+    c.lk.Lock()
+    defer c.lk.Unlock()
+    if c.freeconn == nil { // 如果对象为空，创建一个map对象
+      c.freeconn = make(map[string][]*conn)
+    }
+    freelist := c.freeconn[addr.String()] //得到此地址的连接列表
+    if len(freelist) >= c.maxIdleConns() {//如果连接已满,关闭，不再放入
+      cn.nc.Close()
+      return
+    }
+    c.freeconn[addr.String()] = append(freelist, cn) // 加入到空闲列表中
+  }
+  
+    // 得到一个空闲连接
+  func (c *Client) getFreeConn(addr net.Addr) (cn *conn, ok bool) {
+    c.lk.Lock()
+    defer c.lk.Unlock()
+    if c.freeconn == nil { 
+      return nil, false
+    }
+    freelist, ok := c.freeconn[addr.String()]
+    if !ok || len(freelist) == 0 { // 没有此地址的空闲列表，或者列表为空
+      return nil, false
+    }
+    cn = freelist[len(freelist)-1] // 取出尾部的空闲连接
+    c.freeconn[addr.String()] = freelist[:len(freelist)-1]
+    return cn, true
+  }
+
+
+
+
+Worker 的实现也是五花八门的：有些是在后台默默执行的，不需要等待返回结果；有些需要等待一批任务执行完；有些 Worker Pool 的生命周期和程序一样长；有些只是临时使用，执行完毕后，Pool 就销毁了。大部分的 Worker Pool 都是通过 Channel 来缓存任务的，因为 Channel 能够比较方便地实现并发的保护，有的是多个 Worker 共享同一个任务 Channel，有些是每个 Worker 都有一个独立的 Channel。综合下来，精挑细选，我给你推荐三款易用的 Worker Pool，这三个 Worker Pool 的 API 设计简单，也比较相似，易于和项目集成，而且提供的功能也是我们常用的功能。gammazero/workerpool：gammazero/workerpool 可以无限制地提交任务，提供了更便利的 Submit 和 SubmitWait 方法提交任务，还可以提供当前的 worker 数和任务数以及关闭 Pool 的功能。ivpusic/grpool：grpool 创建 Pool 的时候需要提供 Worker 的数量和等待执行的任务的最大数量，任务的提交是直接往 Channel 放入任务。dpaks/goworkers：dpaks/goworkers 提供了更便利的 Submit 方法提交任务以及 Worker 数、任务数等查询方法、关闭 Pool 的方法。它的任务的执行结果需要在 ResultChan 和 ErrChan 中去获取，没有提供阻塞的方法，但是它可以在初始化的时候设置 Worker 的数量和任务数。类似的 Worker Pool 的实现非常多，比如还有panjf2000/ants、Jeffail/tunny 、benmanns/goworker、go-playground/pool、Sherifabdlnaby/gpool等第三方库。pond也是一个非常不错的 Worker Pool，关注度目前不是很高，但是功能非常齐全。其实，你也可以自己去开发自己的 Worker Pool，但是，对于我这种“懒惰”的人来说，只要满足我的实际需求，我还是倾向于从这个几个常用的库中选择一个来使用。所以，我建议你也从常用的库中进行选择。
+
+
+如果你发现程序中有一种 GC 耗时特别高，有大量的相同类型的临时对象，不断地被创建销毁，这时，你就可以考虑看看，是不是可以通过池化的手段重用这些对象
+
+
+
+
+
+
+
+

@@ -1,0 +1,24 @@
+[go]
+
+
+聚类, 就近声明, 短变量声明, 显示转换, 分支+短变量, 无类型常量, 类型安全, 显示类型转换, iota枚举常量, 
+
+
+_ = tota //跳过0, _ 跳过
+a = 1<<iota  //1<<0=1, 2的次方
+
+
+new, 默认值, 
+
+new 返回一个指针，指向的对象是 zero value 。map slice channel 的 zero value 是 nil。
+make 返回一个相应类型的对象（不是指针），这个对象一定不是 nil
+
+make([]int, 3)       // slice len=3 cap=3
+make([]int, 0, 3)    //slice len=9 cap=3
+make(chan int, 3)    // chan 容量3
+make(map[int]int, 3) // map 容量3
+
+
+零值可用类型要避免复制, 建议通过指针传递
+
+复合字面值, 值语义, 切片cap, 切片起始到数组结尾的元素个数, 不支持指针算数运算, 动态扩容, growslice算法, 容量cap预估, 减少底层数组拷贝, 零值可用, 构造有序map, 用切片存储key, 

@@ -1,14 +1,37 @@
-package main
+/*
+
+1. tmp -> B
+
+		 tmp
+      |
+			V
+ --->  ----->
+A     B				C
+ <---  <-----
+
+
+2. tmp -> last(C)
+
+						 tmp
+						  |
+							V
+ --->  ----->
+A     B				C
+ <---  <-----
+
+*/
+
+package main // 双向链表
 import (
 	"fmt"
 )
 
 //定义一个HeroNode
 type HeroNode struct {
-	no 		 int
-	name 	 string
+	no       int
+	name     string
 	nickname string
-	pre 	 *HeroNode //这个表示指向前一个结点
+	pre      *HeroNode //这个表示指向前一个结点
 	next     *HeroNode //这个表示指向下一个结点
 }
 
@@ -41,11 +64,11 @@ func InsertHeroNode2(head *HeroNode, newHeroNode *HeroNode) {
 	flag := true
 	//让插入的结点的no，和temp的下一个结点的no比较
 	for {
-		if temp.next == nil {//说明到链表的最后
+		if temp.next == nil { //说明到链表的最后
 			break
 		} else if temp.next.no > newHeroNode.no {
 			//说明newHeroNode 就应该插入到temp后面
-			break 
+			break
 		} else if temp.next.no == newHeroNode.no {
 			//说明我们额链表中已经有这个no,就不然插入.
 			flag = false
@@ -59,22 +82,22 @@ func InsertHeroNode2(head *HeroNode, newHeroNode *HeroNode) {
 		return
 	} else {
 		newHeroNode.next = temp.next //ok
-		newHeroNode.pre = temp//ok
+		newHeroNode.pre = temp       //ok
 		if temp.next != nil {
 			temp.next.pre = newHeroNode //ok
 		}
 		temp.next = newHeroNode //ok
 	}
 
-
 }
+
 //删除一个结点[双向链表删除一个结点]
 func DelHerNode(head *HeroNode, id int) {
 	temp := head
 	flag := false
 	//找到要删除结点的no，和temp的下一个结点的no比较
 	for {
-		if temp.next == nil {//说明到链表的最后
+		if temp.next == nil { //说明到链表的最后
 			break
 		} else if temp.next.no == id {
 			//说明我们找到了.
@@ -83,10 +106,10 @@ func DelHerNode(head *HeroNode, id int) {
 		}
 		temp = temp.next
 	}
-	if flag {//找到, 删除，一个节点没有元素引用它，它就会被垃圾机制回收
+	if flag { //找到, 删除，一个节点没有元素引用它，它就会被垃圾机制回收
 		temp.next = temp.next.next //ok
-		if temp.next != nil {  //如果不是最后一个节点
-			temp.next.pre = temp 
+		if temp.next != nil {      //如果不是最后一个节点
+			temp.next.pre = temp
 		}
 	} else {
 		fmt.Println("sorry, 要删除的id不存在")
@@ -103,11 +126,11 @@ func ListHeroNode(head *HeroNode) {
 	// 先判断该链表是不是一个空的链表
 	if temp.next == nil {
 		fmt.Println("空空如也。。。。")
-		return 
+		return
 	}
 	//2. 遍历这个链表
 	for {
-		fmt.Printf("[%d , %s , %s]==>", temp.next.no, 
+		fmt.Printf("[%d , %s , %s]==>", temp.next.no,
 			temp.next.name, temp.next.nickname)
 		//判断是否链表后
 		temp = temp.next
@@ -117,7 +140,6 @@ func ListHeroNode(head *HeroNode) {
 	}
 }
 
-
 func ListHeroNode2(head *HeroNode) {
 
 	//1. 创建一个辅助结点[跑龙套, 帮忙]
@@ -126,7 +148,7 @@ func ListHeroNode2(head *HeroNode) {
 	// 先判断该链表是不是一个空的链表
 	if temp.next == nil {
 		fmt.Println("空空如也。。。。")
-		return 
+		return
 	}
 
 	//2. 让temp定位到双向链表的最后结点
@@ -137,10 +159,9 @@ func ListHeroNode2(head *HeroNode) {
 		temp = temp.next
 	}
 
-
 	//2. 遍历这个链表
 	for {
-		fmt.Printf("[%d , %s , %s]==>", temp.no, 
+		fmt.Printf("[%d , %s , %s]==>", temp.no,
 			temp.name, temp.nickname)
 		//判断是否链表头
 		temp = temp.pre
@@ -150,33 +171,30 @@ func ListHeroNode2(head *HeroNode) {
 	}
 }
 
-
-
 func main() {
 
-	//1. 先创建一个头结点, 
+	//1. 先创建一个头结点,
 	head := &HeroNode{}
 
 	//2. 创建一个新的HeroNode
 	hero1 := &HeroNode{
-		no : 1,
-		name : "宋江",
-		nickname : "及时雨",
+		no:       1,
+		name:     "宋江",
+		nickname: "及时雨",
 	}
 
 	hero2 := &HeroNode{
-		no : 2,
-		name : "卢俊义",
-		nickname : "玉麒麟",
+		no:       2,
+		name:     "卢俊义",
+		nickname: "玉麒麟",
 	}
 
 	hero3 := &HeroNode{
-		no : 3,
-		name : "林冲",
-		nickname : "豹子头",
+		no:       3,
+		name:     "林冲",
+		nickname: "豹子头",
 	}
 
-	
 	InsertHeroNode(head, hero1)
 	InsertHeroNode(head, hero2)
 	InsertHeroNode(head, hero3)
@@ -185,4 +203,3 @@ func main() {
 	ListHeroNode2(head)
 
 }
-	

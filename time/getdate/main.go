@@ -9,7 +9,7 @@ func main() {
 
 	fmt.Printf("Yesterday: %v\n", time.Now().Add(-24*time.Hour))
 
-	fmt.Printf("%+v\n", time.Now().Local().UnixNano())
+	fmt.Printf("当前时间戳纳秒:%+v\n", time.Now().Local().UnixNano())
 	fmt.Printf("当前时间戳:%+v\n", time.Now().Unix()+10)
 	fmt.Printf("当前时间:%+v\n", time.Now())
 
