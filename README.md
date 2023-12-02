@@ -60,7 +60,7 @@
   | chapter05 |程序流程控制/单分支/多分支/for/switch/打印空心三角形/九九乘法表/break/随机值rand.Seed/continue/goto     |
   | chapter06 |函数/包/递归函数/init/匿名函数/闭包/defer/函数参数传递/作用域/金字塔/九九乘法表指定数/字符串系统函数/内建函数/时间和日期相关函数/时间常量/错误处理/自定义错误     |
   | chapter07 |数组array和切片slice/切片扩容/删除字节切片中的空格/切片过滤|
-  | chapter08 |排序和查找/冒泡排序(比较和交换)/二分递归查找/二维数组|
+  | chapter08 |排序和查找/冒泡排序(比较和交换, chapter08/bubbleSort/main.go)/二分递归查找(chapter08/binaryfind/main.go)/二维数组|
   | chapter09 |map映射/map嵌套/增删改查/遍历(for-range)/map切片/map切片append动态增长/map排序        |
   | chapter10 |面向对象上/结构体/方法/方法VS函数/面向对象编程实例/结构体赋值/工厂模式         |
   | chapter11 |抽象/银行账户/封装Set Get/继承匿名结构体/避免多重继承/接口interface/手机相机电脑USB接口案例/Hero结构体排序示例/接口VS继承(接口是继承的一种补充)/多态/多态参数和多态数组/类型断言(接口转换为某个类型)/类型断言最佳实践(判断变量类型)  |
@@ -71,7 +71,7 @@
   | chapter16 | goroutine/判断大数是否是素数/进程和线程(相比协程还是偏重)/并发(多线程单核,微观是时间分片,与Web并发概念有区别)和并行(多线程多核)/协程(轻量级线程,独立栈,共享堆,用户调度,轻松开启上万个协程)和主线程(重量级物理线程，直接作用在CPU,其他语言并发是基于线程的，线程过多(几千个)耗费资源)/channel/MPG模式(M:主线程,P:协程上下文,G:协程,协程可形成队列)/MPG运行状态/设置CPU核数/协程间通信,资源竞争等/go build -race查看资源竞争关系/互斥锁sync.Mutex/Lock/Unlock/ |
   | chapter17 |反射reflect/TypeOf/ValueOf/常量/iota赋零值/修改值rVal.Elem().SetInt(20)/获取标签tagVal := typ.Field(i).Tag.Get("json")/bridge适配器(通过反射自适应参数个数)|
   | chapter18 |TCP编程/Redis/init()初始化连接池      |
-  | chapter20 | 数据结构/栈/稀疏数组sparseArray/队列/数组实现非环形队列singleQueue/常见排序/二分查找/二叉树/快速排序/插入排序/链表       |
+  | chapter20 | 数据结构/栈/稀疏数组sparseArray/队列/数组实现非环形队列singleQueue/常见排序/二分查找(chapter20/binaryfind/main.go)/二叉树及遍历(chapter20/binarytree/main.go)/快速排序(chapter20/quicksort/main.go)/插入排序(chapter20/insertsort/main.go)/链表/选择排序:chapter20/selectsort/main.go       |
   
 
 分布式队列和分布式优先队列: /Users/xb/gitlab/go/go_core_program/concurrent/distributed-main
